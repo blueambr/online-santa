@@ -123,9 +123,9 @@ const Header = ({ data }) => {
   return (
     <header className="fixed left-1/2 bottom-4 -translate-x-1/2">
       <div className="dropdown-top dropdown">
-        <button
-          className="relative h-14 w-14 rounded-full bg-primary"
-          type="button"
+        <label
+          className="relative block h-14 w-14 cursor-pointer rounded-full bg-primary"
+          tabIndex="0"
           title={title}
         >
           <FontAwesomeIcon
@@ -133,8 +133,11 @@ const Header = ({ data }) => {
             icon={getIcon(icon)}
             size="2xl"
           />
-        </button>
-        <nav className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 bg-base-100 py-2 shadow shadow-primary">
+        </label>
+        <nav
+          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 bg-base-100 py-2 shadow shadow-primary"
+          tabIndex="0"
+        >
           {renderNavItems()}
         </nav>
       </div>
