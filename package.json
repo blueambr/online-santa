@@ -1,9 +1,17 @@
 {
-  "name": "tnbt",
+  "name": "@hotepp/tnbt",
   "version": "0.1.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hotepp/online-santa.git"
+  },
+  "author": "Vlad Gerasimovich <hotepp@pm.me>",
+  "license": "The Unlicense",
+  "bugs": "https://github.com/hotepp/online-santa/issues",
   "browserslist": [
-    "defaults"
+    "last 2 versions",
+    "not dead",
+    "> 0.5%"
   ],
   "scripts": {
     "dev": "next dev",
@@ -16,16 +24,16 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "daisyui": "^2.18.1",
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.2",
-    "@tailwindcss/line-clamp": "^0.4.0",
     "autoprefixer": "^10.4.7",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.0",
+    "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.14",

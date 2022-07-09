@@ -4,6 +4,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     container: {
       center: true,
@@ -14,5 +15,9 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["emerald", "forest"],
+    darkTheme: "forest",
+  },
 };

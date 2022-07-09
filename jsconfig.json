@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/layout": ["components/00-layout/index"],
+      "@/elements/*": ["components/01-elements/*"],
+      "@/modules/*": ["components/02-modules/*"],
+      "@/sections/*": ["components/03-sections/*"]
+    }
+  },
+  "include": ["./"]
+}
