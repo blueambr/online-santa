@@ -1,0 +1,47 @@
+{
+  "header": {
+    "icon": "bars",
+    "title": "Открыть меню",
+    "nav": [
+      {
+        "id": "navLink1",
+        "href": "/profile",
+        "icon": "user",
+        "text": "Профиль"
+      },
+      {
+        "id": "navLink2",
+        "href": "/",
+        "icon": "house",
+        "text": "События"
+      },
+      {
+        "id": "navLink3",
+        "isThemeSwitcher": true,
+        "icon": "sun",
+        "iconDark": "moon",
+        "text": "Светлая тема",
+        "textDark": "Тёмная тема"
+      },
+      {
+        "id": "navLink4",
+        "isLanguageSelector": true,
+        "title": "Показать доступные языки",
+        "icon": "language",
+        "text": "Язык",
+        "langs": [
+          {
+            "id": "lang1",
+            "locale": "en",
+            "text": "English"
+          },
+          {
+            "id": "lang2",
+            "locale": "ru",
+            "text": "Русский"
+          }
+        ]
+      }
+    ]
+  }
+}

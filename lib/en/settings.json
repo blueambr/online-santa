@@ -1,0 +1,47 @@
+{
+  "header": {
+    "icon": "bars",
+    "title": "Open the menu",
+    "nav": [
+      {
+        "id": "navLink1",
+        "href": "/profile",
+        "icon": "user",
+        "text": "Profile"
+      },
+      {
+        "id": "navLink2",
+        "href": "/",
+        "icon": "house",
+        "text": "Events"
+      },
+      {
+        "id": "navLink3",
+        "isThemeSwitcher": true,
+        "icon": "sun",
+        "iconDark": "moon",
+        "text": "Light theme",
+        "textDark": "Dark theme"
+      },
+      {
+        "id": "navLink4",
+        "isLanguageSelector": true,
+        "title": "Show available languages",
+        "icon": "language",
+        "text": "Language",
+        "langs": [
+          {
+            "id": "lang1",
+            "locale": "en",
+            "text": "English"
+          },
+          {
+            "id": "lang2",
+            "locale": "ru",
+            "text": "Русский"
+          }
+        ]
+      }
+    ]
+  }
+}

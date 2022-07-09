@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import data from "lib/en/pages";
-import dataRu from "lib/ru/pages";
+import data from "lib/en/pages/profile";
+import dataRu from "lib/ru/pages/profile";
 import Layout from "@/layout";
 
-const Home = () => {
+const User = () => {
   const router = useRouter();
   const { locale } = router;
 
@@ -27,4 +27,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default User;
