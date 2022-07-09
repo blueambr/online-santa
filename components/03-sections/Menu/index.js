@@ -15,7 +15,7 @@ const Menu = ({ data }) => {
   return (
     <section className="py-8">
       <div className="container">
-        <div className="flex flex-col justify-center gap-4 md:flex-row">
+        <nav className="flex flex-col justify-center gap-4 md:flex-row">
           {data.map((item) => (
             <Link href={item.href} key={item.id}>
               <a className="block basis-1/2 rounded-lg border-2 border-primary bg-base-100 p-4 text-center md:basis-1/3">
@@ -24,7 +24,7 @@ const Menu = ({ data }) => {
               </a>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </section>
   );
