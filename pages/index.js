@@ -1,13 +1,16 @@
 import data from "lib/pages";
 import Layout from "@/layout";
+import Menu from "@/sections/Menu";
 
 const Home = () => {
-  const { page } = data;
+  const { page, menu } = data;
 
   return (
     <>
       <Layout data={page}>
-        <h1 className="h1">Home page</h1>
+        <div className="flex h-full flex-col justify-center">
+          <Menu data={menu} />
+        </div>
       </Layout>
     </>
   );

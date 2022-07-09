@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -13,7 +15,12 @@ module.exports = {
         lg: "2rem",
       },
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+        serif: ["Comfortaa", ...defaultTheme.fontFamily.serif],
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
