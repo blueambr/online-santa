@@ -5,6 +5,10 @@
   #__next {
     height: 100%;
   }
+
+  :focus-visible {
+    outline: none;
+  }
 }
 @tailwind components;
 @tailwind utilities;
