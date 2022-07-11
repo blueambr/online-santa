@@ -16,7 +16,12 @@ const TelegramLoginWidget = () => {
 
     script.async = true;
     script.src = "https://telegram.org/js/telegram-widget.js?19";
-    script.setAttribute("data-telegram-login", "OnlineSantaBot");
+    script.setAttribute(
+      "data-telegram-login",
+      process.env.NODE_ENV === "development"
+        ? "OnlineSantaTestBot"
+        : "OnlineSantaBot"
+    );
     script.setAttribute("data-size", "large");
     script.setAttribute("data-request-access", "write");
     script.setAttribute(
