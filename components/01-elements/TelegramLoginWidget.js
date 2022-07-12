@@ -1,10 +1,13 @@
 import { useEffect, useRef } from "react";
+import relay from "utils/relay";
 
 const TelegramLoginWidget = () => {
   const wrapper = useRef(null);
 
   const onTelegramAuth = (user) => {
-    console.log(user);
+    const { id, first_name, last_name } = user;
+
+    relay("/api/user/add", "POST", { id, first_name, last_name });
   };
 
   useEffect(() => {
