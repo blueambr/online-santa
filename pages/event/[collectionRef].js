@@ -15,10 +15,14 @@ const EventPage = ({ event }) => {
 
 export const getServerSideProps = async (context) => {
   try {
+    const { res, query } = context;
+
+    res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate=59");
+
     connectDB();
 
     const event = await Event.findOne({
-      collectionRef: context.query.collectionRef,
+      collectionRef: query.collectionRef,
     }).exec();
 
     if (!event) {

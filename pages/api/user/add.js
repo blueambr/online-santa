@@ -7,6 +7,8 @@ import User from "models/User";
  */
 export default async function addUser(req, res) {
   try {
+    res.setHeader("Cache-Control", "s-maxage=10");
+
     connectDB();
 
     const existingUser = await User.findOne({ id: req.body.id }).exec();
