@@ -4,6 +4,9 @@ const nextConfig = {
     locales: ["en", "ru"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["images.unsplash.com"],
+  },
   reactStrictMode: true,
 };
 

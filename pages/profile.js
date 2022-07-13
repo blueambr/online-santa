@@ -22,7 +22,7 @@ const User = () => {
   return (
     <>
       <Layout data={page}>
-        <h1 className="font-serif text-6xl">{title}</h1>
+        <h1 className="font-serif text-6xl text-neutral-content">{title}</h1>
         <div className="text-center">
           <TelegramLoginWidget />
         </div>

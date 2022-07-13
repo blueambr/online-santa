@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import settings from "lib/en/settings";
 import settingsRu from "lib/ru/settings";
 import Head from "next/head";
 import Header from "@/sections/Header";
 
 const Layout = ({ children, data }) => {
-  const { title } = data;
+  const { title, bgImage } = data;
   const router = useRouter();
   const { locale } = router;
 
@@ -27,8 +28,19 @@ const Layout = ({ children, data }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
       </Head>
+      {bgImage && (
+        <div className="fixed h-screen w-screen">
+          <Image
+            className="brightness-50"
+            src={bgImage.src}
+            alt="Atmospheric background image"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
+      )}
       <Header data={header} />
-      {children}
+      <div className="relative z-10 py-12 lg:py-16">{children}</div>
     </>
   );
 };

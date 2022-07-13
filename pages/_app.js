@@ -1,10 +1,5 @@
-import { ThemeProvider } from "next-themes";
 import "styles/main.css";
 
-const App = ({ Component, pageProps }) => (
-  <ThemeProvider defaultTheme="emerald">
-    <Component {...pageProps} />
-  </ThemeProvider>
-);
+const App = ({ Component, pageProps }) => <Component {...pageProps} />;
 
 export default App;

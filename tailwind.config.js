@@ -24,7 +24,24 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["emerald", "forest"],
-    darkTheme: "forest",
+    base: false,
+    themes: [
+      {
+        main: {
+          primary: "#FACC15",
+          "primary-content": "#171717",
+          neutral: "#A3A3A3",
+          "neutral-content": "#F5F5F5",
+          "base-100": "#0F172A",
+          "base-200": "#111827",
+          "base-300": "#18181B",
+          "base-content": "#F3F4F6",
+          info: "#38BDF8",
+          success: "#4ADE80",
+          warning: "#FB923C",
+          error: "#F87171",
+        },
+      },
+    ],
   },
 };

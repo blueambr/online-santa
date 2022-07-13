@@ -1,12 +1,13 @@
 import connectDB from "utils/connectDB";
 import Event from "models/Event";
 import Layout from "@/layout";
+import HeroEvent from "@/sections/HeroEvent";
 
 const EventPage = ({ event }) => {
   return (
     <>
       <Layout data={{ title: event.name }}>
-        <h1 className="font-serif text-6xl">{event.name}</h1>
+        <HeroEvent data={{ title: event.name }} />
       </Layout>
     </>
   );

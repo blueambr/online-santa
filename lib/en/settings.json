@@ -16,14 +16,6 @@
         "text": "Events"
       },
       {
-        "id": "navLink3",
-        "isThemeSwitcher": true,
-        "icon": "sun",
-        "iconDark": "moon",
-        "text": "Light theme",
-        "textDark": "Dark theme"
-      },
-      {
         "id": "navLink4",
         "isLanguageSelector": true,
         "title": "Show available languages",

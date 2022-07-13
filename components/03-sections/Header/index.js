@@ -1,23 +1,17 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
 import cookieCutter from "cookie-cutter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faHouse,
   faLanguage,
-  faMoon,
-  faSun,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ data }) => {
   const router = useRouter();
   const { pathname, asPath, query } = router;
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
   const { icon, title, nav } = data;
   const getIcon = (req) => {
     switch (req) {
@@ -27,10 +21,6 @@ const Header = ({ data }) => {
         return faHouse;
       case "language":
         return faLanguage;
-      case "moon":
-        return faMoon;
-      case "sun":
-        return faSun;
       case "user":
         return faUser;
     }
@@ -76,30 +66,6 @@ const Header = ({ data }) => {
             </div>
           </div>
         );
-      } else if (item.isThemeSwitcher) {
-        return mounted ? (
-          <button
-            className="flex items-center px-4 py-2"
-            key={item.id}
-            type="button"
-            onClick={() => {
-              if (theme === "forest") {
-                setTheme("emerald");
-              } else {
-                setTheme("forest");
-              }
-            }}
-          >
-            <FontAwesomeIcon
-              className="mr-4 w-6"
-              icon={getIcon(theme === "forest" ? item.icon : item.iconDark)}
-              size="lg"
-            />
-            <div className="text-lg">
-              {theme === "forest" ? item.text : item.textDark}
-            </div>
-          </button>
-        ) : null;
       } else {
         return (
           <Link href={item.href} key={item.id}>
@@ -116,12 +82,8 @@ const Header = ({ data }) => {
       }
     });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <header className="fixed left-1/2 bottom-4 -translate-x-1/2">
+    <header className="fixed left-1/2 bottom-4 z-50 -translate-x-1/2">
       <div className="dropdown-top dropdown">
         <label
           className="relative block h-14 w-14 cursor-pointer rounded-full bg-primary"
@@ -135,7 +97,7 @@ const Header = ({ data }) => {
           />
         </label>
         <nav
-          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 bg-base-100 py-2 shadow shadow-primary"
+          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 py-2 text-base-content shadow shadow-primary"
           tabIndex="0"
         >
           {renderNavItems()}

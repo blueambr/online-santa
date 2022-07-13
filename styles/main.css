@@ -1,5 +1,11 @@
 @tailwind base;
 @layer base {
+  :root,
+  [data-theme] {
+    background-color: hsla(var(--b2) / var(--tw-bg-opacity, 1));
+    color: hsla(var(--bc) / var(--tw-text-opacity, 1));
+  }
+
   html,
   body,
   #__next {

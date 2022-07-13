@@ -16,14 +16,6 @@
         "text": "События"
       },
       {
-        "id": "navLink3",
-        "isThemeSwitcher": true,
-        "icon": "sun",
-        "iconDark": "moon",
-        "text": "Светлая тема",
-        "textDark": "Тёмная тема"
-      },
-      {
         "id": "navLink4",
         "isLanguageSelector": true,
         "title": "Показать доступные языки",

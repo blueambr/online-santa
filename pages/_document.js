@@ -1,5 +1,4 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { useState, useEffect } from "react";
 
 const Document = () => {
   return (
