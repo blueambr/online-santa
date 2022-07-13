@@ -7,7 +7,7 @@ const EventPage = ({ event }) => {
   return (
     <>
       <Layout data={{ title: event.name }}>
-        <HeroEvent data={{ title: event.name }} />
+        <HeroEvent data={event} />
       </Layout>
     </>
   );
