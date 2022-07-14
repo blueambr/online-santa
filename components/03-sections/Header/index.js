@@ -36,7 +36,7 @@ const Header = ({ data }) => {
               className="peer !min-h-0 !px-4 !py-2"
               title={item.title}
             />
-            <div className="collapse-title flex min-h-0 items-center px-4 py-2">
+            <div className="collapse-title rounded-btn flex min-h-0 items-center px-4 py-2 transition duration-200 peer-hover:bg-neutral peer-focus:bg-primary peer-focus:text-primary-content">
               <FontAwesomeIcon
                 className="mr-4 w-6"
                 icon={getIcon(item.icon)}
@@ -49,7 +49,7 @@ const Header = ({ data }) => {
                 {item.langs.map((lang) => (
                   <li key={lang.id}>
                     <button
-                      className="block w-full px-4 py-2 text-left"
+                      className="rounded-btn block w-full px-4 py-2 text-left transition duration-200 hover:bg-neutral focus:bg-primary focus:text-primary-content"
                       type="button"
                       onClick={() => {
                         cookieCutter.set("NEXT_LOCALE", lang.locale);
@@ -69,7 +69,7 @@ const Header = ({ data }) => {
       } else {
         return (
           <Link href={item.href} key={item.id}>
-            <a className="flex items-center px-4 py-2">
+            <a className="rounded-btn flex items-center px-4 py-2 transition duration-200 hover:bg-neutral focus:bg-primary focus:text-primary-content">
               <FontAwesomeIcon
                 className="mr-4 w-6"
                 icon={getIcon(item.icon)}
@@ -86,7 +86,7 @@ const Header = ({ data }) => {
     <header className="fixed left-1/2 bottom-4 z-50 -translate-x-1/2">
       <div className="dropdown-top dropdown">
         <label
-          className="relative block h-14 w-14 cursor-pointer rounded-full bg-primary"
+          className="btn btn-primary btn-circle relative h-14 w-14 "
           tabIndex="0"
           title={title}
         >
@@ -97,7 +97,7 @@ const Header = ({ data }) => {
           />
         </label>
         <nav
-          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 py-2 text-base-content shadow shadow-primary"
+          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 p-2 text-base-content shadow shadow-primary"
           tabIndex="0"
         >
           {renderNavItems()}

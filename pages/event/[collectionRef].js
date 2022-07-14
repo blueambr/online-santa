@@ -2,12 +2,14 @@ import connectDB from "utils/connectDB";
 import Event from "models/Event";
 import Layout from "@/layout";
 import HeroEvent from "@/sections/HeroEvent";
+import FormEvent from "@/sections/FormEvent";
 
 const EventPage = ({ event }) => {
   return (
     <>
       <Layout data={{ title: event.name }}>
         <HeroEvent data={event} />
+        <FormEvent />
       </Layout>
     </>
   );

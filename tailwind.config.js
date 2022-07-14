@@ -30,8 +30,8 @@ module.exports = {
         main: {
           primary: "#FACC15",
           "primary-content": "#171717",
-          neutral: "#A3A3A3",
-          "neutral-content": "#F5F5F5",
+          neutral: "#64748B",
+          "neutral-content": "#F1F5F9",
           "base-100": "#0F172A",
           "base-200": "#111827",
           "base-300": "#18181B",

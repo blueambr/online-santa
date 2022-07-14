@@ -40,7 +40,7 @@ const Layout = ({ children, data }) => {
         </div>
       )}
       <Header data={header} />
-      <div className="relative z-10 py-12 lg:py-16">{children}</div>
+      <div className="relative z-10">{children}</div>
     </>
   );
 };
