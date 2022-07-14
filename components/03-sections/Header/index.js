@@ -2,29 +2,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import cookieCutter from "cookie-cutter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faHouse,
-  faLanguage,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import getIcon from "utils/getIcon";
 
 const Header = ({ data }) => {
   const router = useRouter();
   const { pathname, asPath, query } = router;
   const { icon, title, nav } = data;
-  const getIcon = (req) => {
-    switch (req) {
-      case "bars":
-        return faBars;
-      case "house":
-        return faHouse;
-      case "language":
-        return faLanguage;
-      case "user":
-        return faUser;
-    }
-  };
 
   const renderNavItems = () =>
     nav.map((item) => {
@@ -91,13 +74,13 @@ const Header = ({ data }) => {
           title={title}
         >
           <FontAwesomeIcon
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-primary-content"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             icon={getIcon(icon)}
             size="2xl"
           />
         </label>
         <nav
-          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 p-2 text-base-content shadow shadow-primary"
+          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 p-2 shadow shadow-primary"
           tabIndex="0"
         >
           {renderNavItems()}
