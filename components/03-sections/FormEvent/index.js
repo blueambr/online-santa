@@ -8,16 +8,22 @@ const FormEvent = () => {
         <form className="text-center" action="#" method="post">
           <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
             <div className="flex w-full flex-col gap-4 md:block md:columns-3">
-              <select className="select select-primary w-full">
-                <option disabled selected>
+              <select
+                className="select select-primary w-full"
+                defaultValue="default"
+              >
+                <option value="default" disabled>
                   Platform&#39;s name
                 </option>
                 <option>PlayStation</option>
                 <option>Steam</option>
                 <option>XBOX</option>
               </select>
-              <select className="select select-primary w-full">
-                <option disabled selected>
+              <select
+                className="select select-primary w-full"
+                defaultValue="default"
+              >
+                <option value="default" disabled>
                   Region
                 </option>
                 <option>EU</option>
@@ -31,7 +37,7 @@ const FormEvent = () => {
               />
             </div>
             <button
-              className="btn btn-square btn-outline btn-error relative"
+              className="btn btn-outline btn-error btn-square relative"
               title="Remove this Gaming Platform"
               type="button"
             >
