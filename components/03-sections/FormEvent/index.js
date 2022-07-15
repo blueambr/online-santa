@@ -1,44 +1,50 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import getIcon from "utils/getIcon";
 
-const FormEvent = () => {
-  return (
-    <>
-      <section className="container py-12 lg:py-16">
-        <form className="text-center" action="#" method="post">
+const FormEvent = ({ data }) => {
+  const renderEntityFields = (entity) =>
+    entity.fields.map((field) => {
+      if (field.options) {
+        return (
+          <select
+            className="select select-primary w-full"
+            defaultValue="default"
+            key={field.id}
+          >
+            {field.options.map((option) => (
+              <option
+                key={option.id}
+                value={option.isPlaceholder && "default"}
+                disabled={option.isPlaceholder}
+              >
+                {option.value}
+              </option>
+            ))}
+          </select>
+        );
+      } else {
+        return (
+          <input
+            className="input input-bordered input-primary w-full"
+            type="text"
+            placeholder={field.placeholder}
+            key={field.id}
+          />
+        );
+      }
+    });
+
+  const renderFields = (field) => {
+    if (field.isDynamic) {
+      return field.entities.map((entity) => (
+        <>
           <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
             <div className="flex w-full flex-col gap-4 md:block md:columns-3">
-              <select
-                className="select select-primary w-full"
-                defaultValue="default"
-              >
-                <option value="default" disabled>
-                  Platform&#39;s name
-                </option>
-                <option>PlayStation</option>
-                <option>Steam</option>
-                <option>XBOX</option>
-              </select>
-              <select
-                className="select select-primary w-full"
-                defaultValue="default"
-              >
-                <option value="default" disabled>
-                  Region
-                </option>
-                <option>EU</option>
-                <option>Russia</option>
-                <option>Turkey</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Account link"
-                className="input input-bordered input-primary  w-full"
-              />
+              {renderEntityFields(entity)}
             </div>
             <button
               className="btn btn-outline btn-error btn-square relative"
-              title="Remove this Gaming Platform"
+              title={field.buttonRemove}
               type="button"
             >
               <FontAwesomeIcon
@@ -50,8 +56,22 @@ const FormEvent = () => {
           </div>
           <button className="btn btn-primary mt-8 gap-2" type="button">
             <FontAwesomeIcon icon={getIcon("plus")} size="xl" />
-            Add a Gaming Platform
+            {field.buttonAdd}
           </button>
+        </>
+      ));
+    }
+  };
+
+  return (
+    <>
+      <section className="container py-12 lg:py-16">
+        <form className="text-center" action="#" method="post">
+          <ul role="list">
+            {data.fields.map((field) => (
+              <li key={field.id}>{renderFields(field)}</li>
+            ))}
+          </ul>
         </form>
       </section>
     </>

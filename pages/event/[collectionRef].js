@@ -22,13 +22,13 @@ const EventPage = ({ event }) => {
     }
   };
 
-  const { page, hero } = getData();
+  const { page, hero, form } = getData();
 
   return (
     <>
       <Layout data={page}>
         <HeroEvent data={hero} />
-        <FormEvent />
+        <FormEvent data={form} />
       </Layout>
     </>
   );

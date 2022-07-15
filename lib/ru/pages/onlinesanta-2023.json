@@ -4,5 +4,70 @@
   },
   "hero": {
     "name": "Online Santa 2023"
+  },
+  "form": {
+    "fields": [
+      {
+        "id": "onlineSanta2023FormFieldPlatforms",
+        "isDynamic": true,
+        "buttonAdd": "Добавить Игровую Платформу",
+        "buttonRemove": "Убрать эту Игровую Платформу",
+        "entities": [
+          {
+            "fields": [
+              {
+                "options": [
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
+                    "isPlaceholder": true,
+                    "value": "Название платформы"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlayStation",
+                    "value": "PlayStation"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformSteam",
+                    "value": "Steam"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformXBOX",
+                    "value": "XBOX"
+                  }
+                ]
+              },
+              {
+                "options": [
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionPlaceholder",
+                    "isPlaceholder": true,
+                    "value": "Регион"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionEU",
+                    "value": "ЕС"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionRussia",
+                    "value": "РФ"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionTurkey",
+                    "value": "Турция"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionUkraine",
+                    "value": "Украина"
+                  }
+                ]
+              },
+              {
+                "placeholder": "Ссылка на аккаунт"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

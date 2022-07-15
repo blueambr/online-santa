@@ -4,5 +4,70 @@
   },
   "hero": {
     "name": "Online Santa 2023"
+  },
+  "form": {
+    "fields": [
+      {
+        "id": "onlineSanta2023FormFieldPlatforms",
+        "isDynamic": true,
+        "buttonAdd": "Add a Gaming Platform",
+        "buttonRemove": "Remove this Gaming Platform",
+        "entities": [
+          {
+            "fields": [
+              {
+                "options": [
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
+                    "isPlaceholder": true,
+                    "value": "Platform's name"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlayStation",
+                    "value": "PlayStation"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformSteam",
+                    "value": "Steam"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformXBOX",
+                    "value": "XBOX"
+                  }
+                ]
+              },
+              {
+                "options": [
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionPlaceholder",
+                    "isPlaceholder": true,
+                    "value": "Region"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionEU",
+                    "value": "EU"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionRussia",
+                    "value": "Russia"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionTurkey",
+                    "value": "Turkey"
+                  },
+                  {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectRegionUkraine",
+                    "value": "Ukraine"
+                  }
+                ]
+              },
+              {
+                "placeholder": "Account link"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
