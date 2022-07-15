@@ -31,6 +31,7 @@
     "cookie-cutter": "^0.2.0",
     "daisyui": "^2.18.1",
     "mongoose": "^6.4.4",
+    "nanoid": "^4.0.0",
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
