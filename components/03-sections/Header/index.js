@@ -67,7 +67,7 @@ const Header = ({ data }) => {
 
   return (
     <header className="fixed left-1/2 bottom-4 z-50 -translate-x-1/2">
-      <div className="dropdown-top dropdown">
+      <div className="dropdown dropdown-top">
         <label
           className="btn btn-primary btn-circle relative h-14 w-14 "
           tabIndex="0"
@@ -80,7 +80,7 @@ const Header = ({ data }) => {
           />
         </label>
         <nav
-          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 p-2 shadow shadow-primary"
+          className="dropdown-content rounded-box left-1/2 mb-2 w-64 -translate-x-1/2 bg-base-200 p-2 shadow shadow-primary"
           tabIndex="0"
         >
           {renderNavItems()}

@@ -44,7 +44,7 @@ const FormEvent = ({ data }) => {
         <>
           {dynamicEntities.map((entity) => (
             <div
-              className="flex flex-col items-center gap-4 md:flex-row md:items-start"
+              className="mb-4 flex flex-col items-center gap-4 last-of-type:mb-0 md:flex-row md:items-start"
               key={entity.id}
             >
               <div className="flex w-full flex-col gap-4 md:block md:columns-3">
