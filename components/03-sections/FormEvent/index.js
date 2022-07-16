@@ -5,6 +5,7 @@ import getIcon from "utils/getIcon";
 
 const FormEvent = ({ data }) => {
   const [dynamicEntities, setDynamicEntities] = useState([]);
+  const [canAddEntities, setCanAddEntities] = useState(true);
 
   const renderEntityFields = (entity) =>
     entity.fields.map((field) => {
@@ -63,53 +64,62 @@ const FormEvent = ({ data }) => {
               </button>
             </div>
           ))}
-          <button
-            className="btn btn-primary mt-8 gap-2"
-            type="button"
-            onClick={() => createDynamicEntities()}
-          >
-            <FontAwesomeIcon icon={getIcon("plus")} size="xl" />
-            {field.buttonAdd}
-          </button>
+          {canAddEntities && (
+            <button
+              className="btn btn-primary mt-8 inline-flex flex-nowrap gap-2"
+              type="button"
+              onClick={() => createDynamicEntities()}
+            >
+              <FontAwesomeIcon icon={getIcon("plus")} size="xl" />
+              {field.buttonAdd}
+            </button>
+          )}
         </>
       );
     }
   };
 
   const createDynamicEntities = (isFirstRun = false) => {
-    data.fields.map((field) => {
-      if (field.isDynamic) {
-        const { entity } = field;
+    if (isFirstRun || canAddEntities) {
+      data.fields.map((field) => {
+        if (field.isDynamic) {
+          const { entity } = field;
 
-        if (isFirstRun) {
-          setDynamicEntities([entity]);
-        } else {
-          const splitColon = JSON.stringify(entity).split(":");
+          if (isFirstRun) {
+            setDynamicEntities([entity]);
+            setCanAddEntities(true);
+          } else {
+            const splitColon = JSON.stringify(entity).split(":");
 
-          const splitColonUpdated = splitColon.map((item, index) => {
-            if (item.includes('"id"')) {
-              const idItemSplitComma = splitColon[index + 1].split(",");
+            const splitColonUpdated = splitColon.map((item, index) => {
+              if (item.includes('"id"')) {
+                const idItemSplitComma = splitColon[index + 1].split(",");
 
-              idItemSplitComma[0] = `"${nanoid()}"`;
+                idItemSplitComma[0] = `"${nanoid()}"`;
 
-              splitColon[index + 1] = idItemSplitComma.join();
+                splitColon[index + 1] = idItemSplitComma.join();
+              }
+
+              return item;
+            });
+
+            setDynamicEntities([
+              ...dynamicEntities,
+              JSON.parse(splitColonUpdated.join(":")),
+            ]);
+
+            if (dynamicEntities.length + 1 === entity.maxNumber) {
+              setCanAddEntities(false);
             }
-
-            return item;
-          });
-
-          setDynamicEntities([
-            ...dynamicEntities,
-            JSON.parse(splitColonUpdated.join(":")),
-          ]);
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   useEffect(() => {
     createDynamicEntities(true);
-  }, []);
+  }, [data]);
 
   return (
     <>

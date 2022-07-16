@@ -14,6 +14,7 @@
         "buttonRemove": "Убрать эту Игровую Платформу",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
+          "maxNumber": 3,
           "fields": [
             {
               "id": "onlineSanta2023FormFieldPlatformsSelectPlatform",
