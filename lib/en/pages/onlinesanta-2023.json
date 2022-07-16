@@ -10,8 +10,8 @@
       {
         "id": "onlineSanta2023FormFieldPlatforms",
         "isDynamic": true,
-        "buttonAdd": "Add a Gaming Platform",
-        "buttonRemove": "Remove this Gaming Platform",
+        "buttonAdd": "Add Gaming Platform",
+        "buttonRemove": "Remove Gaming Platform",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
           "maxNumber": 3,
@@ -22,7 +22,7 @@
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
                   "isPlaceholder": true,
-                  "value": "Platform's name"
+                  "value": "Gaming Platform"
                 },
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlayStation",
@@ -66,7 +66,7 @@
             },
             {
               "id": "onlineSanta2023FormFieldPlatformsInputAccountLink",
-              "placeholder": "Account link"
+              "placeholder": "Profile / Username"
             }
           ]
         }

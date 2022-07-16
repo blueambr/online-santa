@@ -43,7 +43,7 @@ const FormEvent = ({ data }) => {
     if (field.isDynamic) {
       return (
         <>
-          {dynamicEntities.map((entity) => (
+          {dynamicEntities.map((entity, entityIndex) => (
             <div
               className="mb-4 flex flex-col items-center gap-4 last-of-type:mb-0 md:flex-row md:items-start"
               key={entity.id}
@@ -51,17 +51,27 @@ const FormEvent = ({ data }) => {
               <div className="flex w-full flex-col gap-4 md:block md:columns-3">
                 {renderEntityFields(entity)}
               </div>
-              <button
-                className="btn btn-outline btn-error btn-square relative"
-                title={field.buttonRemove}
-                type="button"
-              >
-                <FontAwesomeIcon
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                  icon={getIcon("xmark")}
-                  size="2xl"
-                />
-              </button>
+              {dynamicEntities.length >= 2 && (
+                <button
+                  className="btn btn-outline btn-error btn-square relative"
+                  title={field.buttonRemove}
+                  type="button"
+                  onClick={() => {
+                    setDynamicEntities(
+                      dynamicEntities.filter(
+                        (entity, index) => index !== entityIndex
+                      )
+                    );
+                    setCanAddEntities(true);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    icon={getIcon("xmark")}
+                    size="2xl"
+                  />
+                </button>
+              )}
             </div>
           ))}
           {canAddEntities && (

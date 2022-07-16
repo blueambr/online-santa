@@ -11,7 +11,7 @@
         "id": "onlineSanta2023FormFieldPlatforms",
         "isDynamic": true,
         "buttonAdd": "Добавить Игровую Платформу",
-        "buttonRemove": "Убрать эту Игровую Платформу",
+        "buttonRemove": "Убрать Игровую Платформу",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
           "maxNumber": 3,
@@ -22,7 +22,7 @@
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
                   "isPlaceholder": true,
-                  "value": "Название платформы"
+                  "value": "Игровая Платформа"
                 },
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlayStation",
@@ -66,7 +66,7 @@
             },
             {
               "id": "onlineSanta2023FormFieldPlatformsInputAccountLink",
-              "placeholder": "Ссылка на аккаунт"
+              "placeholder": "Профиль / Имя пользователя"
             }
           ]
         }
