@@ -51,20 +51,34 @@
                   "value": "Регион"
                 },
                 {
+                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionCIS",
+                  "value": "СНГ",
+                  "code": "cis"
+                },
+                {
                   "id": "onlineSanta2023FormFieldPlatformsSelectRegionEU",
-                  "value": "ЕС"
+                  "value": "ЕС",
+                  "code": "eu"
                 },
                 {
-                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionRussia",
-                  "value": "РФ"
+                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionKZ",
+                  "value": "Казахстан",
+                  "code": "kz"
                 },
                 {
-                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionTurkey",
-                  "value": "Турция"
+                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionRu",
+                  "value": "РФ",
+                  "code": "ru"
                 },
                 {
-                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionUkraine",
-                  "value": "Украина"
+                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionTR",
+                  "value": "Турция",
+                  "code": "tr"
+                },
+                {
+                  "id": "onlineSanta2023FormFieldPlatformsSelectRegionUA",
+                  "value": "Украина",
+                  "code": "ua"
                 }
               ]
             },

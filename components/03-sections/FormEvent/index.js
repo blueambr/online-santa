@@ -7,7 +7,9 @@ const FormEvent = ({ data }) => {
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
 
-  const onSelectInput = (e, id, steamChosen) => {
+  const onSelectInput = (e, id) => {
+    let steamChosen;
+
     if (e.target.value === "steam") {
       steamChosen = true;
     } else {
@@ -33,7 +35,6 @@ const FormEvent = ({ data }) => {
 
   const renderEntityFields = (entity) => {
     const { id } = entity;
-    let steamChosen = false;
 
     return entity.fields.map((field) => {
       if (
@@ -45,9 +46,7 @@ const FormEvent = ({ data }) => {
             className="select select-primary w-full"
             defaultValue="default"
             key={field.id}
-            onInput={(e) =>
-              field.hasSteam && onSelectInput(e, id, steamChosen, field)
-            }
+            onInput={(e) => field.hasSteam && onSelectInput(e, id)}
           >
             {field.options.map((option) => (
               <option
@@ -170,6 +169,9 @@ const FormEvent = ({ data }) => {
 
   useEffect(() => {
     createDynamicEntities(true);
+    document
+      .querySelectorAll("select")
+      .forEach((select) => (select.value = "default"));
   }, [data]);
 
   return (
