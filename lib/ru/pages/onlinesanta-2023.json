@@ -14,10 +14,10 @@
         "buttonRemove": "Убрать Игровую Платформу",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
-          "maxNumber": 3,
           "fields": [
             {
               "id": "onlineSanta2023FormFieldPlatformsSelectPlatform",
+              "hasSteam": true,
               "options": [
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
@@ -30,6 +30,7 @@
                 },
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformSteam",
+                  "code": "steam",
                   "value": "Steam"
                 },
                 {
@@ -40,6 +41,9 @@
             },
             {
               "id": "onlineSanta2023FormFieldPlatformsSelectRegion",
+              "forSteam": true,
+              "steamChosen": false,
+              "placeholder": "Регион",
               "options": [
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectRegionPlaceholder",

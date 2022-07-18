@@ -7,19 +7,56 @@ const FormEvent = ({ data }) => {
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
 
-  const renderEntityFields = (entity) =>
-    entity.fields.map((field) => {
-      if (field.options) {
+  const onSelectInput = (e, id, steamChosen) => {
+    if (e.target.value === "steam") {
+      steamChosen = true;
+    } else {
+      steamChosen = false;
+    }
+
+    const updatedDynamicEntities = dynamicEntities.map((entity) => {
+      if (entity.id === id) {
+        entity.fields.forEach((field) => {
+          if (field.forSteam) {
+            field.steamChosen = steamChosen;
+            return field;
+          }
+          return field;
+        });
+        return entity;
+      }
+      return entity;
+    });
+
+    setDynamicEntities(updatedDynamicEntities);
+  };
+
+  const renderEntityFields = (entity) => {
+    const { id } = entity;
+    let steamChosen = false;
+
+    return entity.fields.map((field) => {
+      if (
+        (field.options && !field.forSteam) ||
+        (field.forSteam && field.steamChosen)
+      ) {
         return (
           <select
             className="select select-primary w-full"
             defaultValue="default"
             key={field.id}
+            onInput={(e) =>
+              field.hasSteam && onSelectInput(e, id, steamChosen, field)
+            }
           >
             {field.options.map((option) => (
               <option
                 key={option.id}
-                value={option.isPlaceholder && "default"}
+                value={
+                  (option.isPlaceholder && "default") ||
+                  option.code ||
+                  option.value
+                }
                 disabled={option.isPlaceholder}
               >
                 {option.value}
@@ -38,6 +75,7 @@ const FormEvent = ({ data }) => {
         );
       }
     });
+  };
 
   const renderFields = (field) => {
     if (field.isDynamic) {
@@ -118,7 +156,10 @@ const FormEvent = ({ data }) => {
               JSON.parse(splitColonUpdated.join(":")),
             ]);
 
-            if (dynamicEntities.length + 1 === entity.maxNumber) {
+            if (
+              entity.maxNumber &&
+              dynamicEntities.length + 1 === entity.maxNumber
+            ) {
               setCanAddEntities(false);
             }
           }
