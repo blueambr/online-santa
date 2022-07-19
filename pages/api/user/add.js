@@ -9,17 +9,37 @@ export default async function addUser(req, res) {
   try {
     res.setHeader("Cache-Control", "s-maxage=10");
 
-    connectDB();
+    await connectDB();
 
     const existingUser = await User.findOne({ id: req.body.id }).exec();
 
     if (existingUser) {
-      res.json({
-        existingUser,
-        serverMessage: "The requested User already exists.",
-      });
+      if (
+        existingUser.first_name === req.body.first_name &&
+        existingUser.last_name === req.body.last_name &&
+        existingUser.username === req.body.username
+      ) {
+        res.json({
+          existingUser,
+          serverMessage: "The requested User already exists.",
+        });
+      } else {
+        await User.updateOne(
+          { id: existingUser.id },
+          {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            username: req.body.username,
+          }
+        );
+
+        res.json({
+          existingUser,
+          serverMessage: "The requested User has been updated.",
+        });
+      }
     } else {
-      const user = User.create(req.body);
+      const user = await User.create(req.body);
 
       res.json({ user, serverMessage: "The requested User has been created." });
     }

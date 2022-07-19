@@ -5,9 +5,9 @@ const TelegramLoginWidget = () => {
   const wrapper = useRef(null);
 
   const onTelegramAuth = (user) => {
-    const { id, first_name, last_name } = user;
+    const { id, first_name, last_name, username } = user;
 
-    relay("/api/user/add", "POST", { id, first_name, last_name });
+    relay("/api/user/add", "POST", { id, first_name, last_name, username });
   };
 
   useEffect(() => {

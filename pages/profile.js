@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import data from "lib/en/pages/profile";
 import dataRu from "lib/ru/pages/profile";
 import Layout from "@/layout";
-import TelegramLoginWidget from "@/elements/TelegramLoginWidget";
+import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 
 const User = () => {
   const router = useRouter();
