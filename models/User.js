@@ -18,6 +18,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  hash: {
+    type: String,
+    required: true,
+  },
 });
 
 const User = models.User || model("User", userSchema);

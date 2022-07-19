@@ -128,7 +128,7 @@ const FormEvent = ({ data }) => {
         <input
           className="input input-bordered input-primary w-full md:w-1/2"
           type="text"
-          value={field.isTelegram && `https://t.me/`}
+          defaultValue={field.isTelegram && `https://t.me/`}
           placeholder={field.placeholder}
           key={field.id}
         />

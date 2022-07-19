@@ -14,30 +14,20 @@ export default async function addUser(req, res) {
     const existingUser = await User.findOne({ id: req.body.id }).exec();
 
     if (existingUser) {
-      if (
-        existingUser.first_name === req.body.first_name &&
-        existingUser.last_name === req.body.last_name &&
-        existingUser.username === req.body.username
-      ) {
-        res.json({
-          existingUser,
-          serverMessage: "The requested User already exists.",
-        });
-      } else {
-        await User.updateOne(
-          { id: existingUser.id },
-          {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            username: req.body.username,
-          }
-        );
+      await User.updateOne(
+        { id: existingUser.id },
+        {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          username: req.body.username,
+          hash: req.body.hash,
+        }
+      );
 
-        res.json({
-          existingUser,
-          serverMessage: "The requested User has been updated.",
-        });
-      }
+      res.json({
+        existingUser,
+        serverMessage: "The requested User has been updated.",
+      });
     } else {
       const user = await User.create(req.body);
 
