@@ -123,6 +123,16 @@ const FormEvent = ({ data }) => {
           )}
         </>
       );
+    } else {
+      return (
+        <input
+          className="input input-bordered input-primary w-full md:w-1/2"
+          type="text"
+          value={field.isTelegram && `https://t.me/`}
+          placeholder={field.placeholder}
+          key={field.id}
+        />
+      );
     }
   };
 
@@ -178,7 +188,7 @@ const FormEvent = ({ data }) => {
     <>
       <section className="container py-12 lg:py-16">
         <form className="text-center" action="#" method="post">
-          <ul role="list">
+          <ul className="grid gap-8" role="list">
             {data.fields.map((field) => (
               <li key={field.id}>{renderFields(field)}</li>
             ))}

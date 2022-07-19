@@ -88,6 +88,11 @@
             }
           ]
         }
+      },
+      {
+        "id": "onlineSanta2023FormFieldTelegram",
+        "isTelegram": true,
+        "placeholder": "Ваш Telegram"
       }
     ]
   }
