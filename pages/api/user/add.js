@@ -24,8 +24,10 @@ export default async function addUser(req, res) {
         }
       );
 
+      const user = await User.findOne({ id: req.body.id }).exec();
+
       res.json({
-        user: existingUser,
+        user,
         serverMessage: "The requested User has been updated.",
       });
     } else {
