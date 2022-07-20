@@ -94,7 +94,7 @@ const FormEvent = ({ data }) => {
               </div>
               {dynamicEntities.length >= 2 && (
                 <button
-                  className="btn btn-square btn-outline btn-error relative"
+                  className="btn btn-outline btn-error btn-square relative"
                   title={field.buttonRemove}
                   type="button"
                   onClick={() => {
@@ -132,7 +132,9 @@ const FormEvent = ({ data }) => {
         <input
           className="input input-bordered input-primary w-full md:w-1/2"
           type="text"
-          defaultValue={field.isTelegram && `https://t.me/${user.username}`}
+          defaultValue={
+            field.isTelegram && user.username && `https://t.me/${user.username}`
+          }
           placeholder={field.placeholder}
           key={field.id}
         />
@@ -192,11 +194,15 @@ const FormEvent = ({ data }) => {
     <>
       <section className="container py-12 lg:py-16">
         {user === null ? (
-          <div>
-            <h1>Loading...</h1>
+          <div className="text-center">
+            <h1 className="font-serif text-6xl text-neutral-content">
+              Loading...
+            </h1>
           </div>
         ) : !user ? (
-          <TelegramLoginWidget />
+          <div className="text-center">
+            <TelegramLoginWidget />
+          </div>
         ) : (
           <form className="text-center" action="#" method="post">
             <ul className="grid gap-8" role="list">

@@ -10,18 +10,22 @@ const TelegramLoginWidget = () => {
 
   const onTelegramAuth = (user) => {
     const { id, first_name, last_name, username, hash } = user;
-    const dbUser = {
-      id,
-      first_name,
-      last_name,
-      username,
-      hash,
-    };
 
-    relay("/api/user/add", "POST", dbUser, () => {
-      setCookie("TELEGRAM_AUTH_HASH", hash);
-      setUser(dbUser);
-    });
+    relay(
+      "/api/user/add",
+      "POST",
+      {
+        id,
+        first_name,
+        last_name,
+        username,
+        hash,
+      },
+      (res) => {
+        setCookie("TELEGRAM_AUTH_HASH", res.user.hash);
+        setUser(res.user);
+      }
+    );
   };
 
   useEffect(() => {

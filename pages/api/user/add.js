@@ -25,7 +25,7 @@ export default async function addUser(req, res) {
       );
 
       res.json({
-        existingUser,
+        user: existingUser,
         serverMessage: "The requested User has been updated.",
       });
     } else {

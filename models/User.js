@@ -12,11 +12,9 @@ const userSchema = new Schema({
   },
   last_name: {
     type: String,
-    required: true,
   },
   username: {
     type: String,
-    required: true,
   },
   hash: {
     type: String,
