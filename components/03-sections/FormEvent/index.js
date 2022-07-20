@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { nanoid } from "nanoid";
+import GlobalContext from "context";
 import getIcon from "utils/getIcon";
+import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 
 const FormEvent = ({ data }) => {
+  const globalContext = useContext(GlobalContext);
+  const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
 
@@ -90,7 +94,7 @@ const FormEvent = ({ data }) => {
               </div>
               {dynamicEntities.length >= 2 && (
                 <button
-                  className="btn btn-outline btn-error btn-square relative"
+                  className="btn btn-square btn-outline btn-error relative"
                   title={field.buttonRemove}
                   type="button"
                   onClick={() => {
@@ -128,7 +132,7 @@ const FormEvent = ({ data }) => {
         <input
           className="input input-bordered input-primary w-full md:w-1/2"
           type="text"
-          defaultValue={field.isTelegram && `https://t.me/`}
+          defaultValue={field.isTelegram && `https://t.me/${user.username}`}
           placeholder={field.placeholder}
           key={field.id}
         />
@@ -187,13 +191,21 @@ const FormEvent = ({ data }) => {
   return (
     <>
       <section className="container py-12 lg:py-16">
-        <form className="text-center" action="#" method="post">
-          <ul className="grid gap-8" role="list">
-            {data.fields.map((field) => (
-              <li key={field.id}>{renderFields(field)}</li>
-            ))}
-          </ul>
-        </form>
+        {user === null ? (
+          <div>
+            <h1>Loading...</h1>
+          </div>
+        ) : !user ? (
+          <TelegramLoginWidget />
+        ) : (
+          <form className="text-center" action="#" method="post">
+            <ul className="grid gap-8" role="list">
+              {data.fields.map((field) => (
+                <li key={field.id}>{renderFields(field)}</li>
+              ))}
+            </ul>
+          </form>
+        )}
       </section>
     </>
   );

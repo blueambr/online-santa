@@ -11,7 +11,7 @@ const relay = (query, method, body, onSuccess, onError) => {
       console.info("Success!", result.serverMessage);
 
       if (onSuccess) {
-        onSuccess();
+        onSuccess(result);
       }
     })
     .catch((err) => {

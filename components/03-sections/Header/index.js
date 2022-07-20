@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import cookieCutter from "cookie-cutter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { setCookie } from "utils/cookies";
 import getIcon from "utils/getIcon";
 
 const Header = ({ data }) => {
@@ -35,7 +35,7 @@ const Header = ({ data }) => {
                       className="rounded-btn block w-full px-4 py-2 text-left transition duration-200 hover:bg-neutral focus:bg-primary focus:text-primary-content"
                       type="button"
                       onClick={() => {
-                        cookieCutter.set("NEXT_LOCALE", lang.locale);
+                        setCookie("NEXT_LOCALE", lang.locale);
                         router.push({ pathname, query }, asPath, {
                           locale: lang.locale,
                         });

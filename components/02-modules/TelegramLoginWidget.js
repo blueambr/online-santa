@@ -1,30 +1,27 @@
-import { useEffect, useRef } from "react";
-import cookieCutter from "cookie-cutter";
-import { add } from "date-fns";
+import { useContext, useEffect, useRef } from "react";
+import GlobalContext from "context";
+import { setCookie } from "utils/cookies";
 import relay from "utils/relay";
 
 const TelegramLoginWidget = () => {
+  const globalContext = useContext(GlobalContext);
+  const { setUser } = globalContext;
   const wrapper = useRef(null);
 
   const onTelegramAuth = (user) => {
     const { id, first_name, last_name, username, hash } = user;
+    const dbUser = {
+      id,
+      first_name,
+      last_name,
+      username,
+      hash,
+    };
 
-    relay(
-      "/api/user/add",
-      "POST",
-      {
-        id,
-        first_name,
-        last_name,
-        username,
-        hash,
-      },
-      () => {
-        cookieCutter.set("TELEGRAM_AUTH_HASH", hash, {
-          expires: add(new Date(), { months: 1 }),
-        });
-      }
-    );
+    relay("/api/user/add", "POST", dbUser, () => {
+      setCookie("TELEGRAM_AUTH_HASH", hash);
+      setUser(dbUser);
+    });
   };
 
   useEffect(() => {
