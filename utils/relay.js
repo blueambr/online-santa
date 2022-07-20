@@ -1,4 +1,4 @@
-const relay = (query, method, body) => {
+const relay = (query, method, body, onSuccess, onError) => {
   fetch(query, {
     method,
     headers: {
@@ -9,9 +9,17 @@ const relay = (query, method, body) => {
     .then((res) => res.json())
     .then((result) => {
       console.info("Success!", result.serverMessage);
+
+      if (onSuccess) {
+        onSuccess();
+      }
     })
     .catch((err) => {
       console.error("Error:", err);
+
+      if (onError) {
+        onError();
+      }
     });
 };
 

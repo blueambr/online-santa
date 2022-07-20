@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import cookieCutter from "cookie-cutter";
+import { add } from "date-fns";
 import relay from "utils/relay";
 
 const TelegramLoginWidget = () => {
@@ -7,13 +9,22 @@ const TelegramLoginWidget = () => {
   const onTelegramAuth = (user) => {
     const { id, first_name, last_name, username, hash } = user;
 
-    relay("/api/user/add", "POST", {
-      id,
-      first_name,
-      last_name,
-      username,
-      hash,
-    });
+    relay(
+      "/api/user/add",
+      "POST",
+      {
+        id,
+        first_name,
+        last_name,
+        username,
+        hash,
+      },
+      () => {
+        cookieCutter.set("TELEGRAM_AUTH_HASH", hash, {
+          expires: add(new Date(), { months: 1 }),
+        });
+      }
+    );
   };
 
   useEffect(() => {

@@ -67,7 +67,7 @@ const Header = ({ data }) => {
 
   return (
     <header className="fixed left-1/2 bottom-4 z-50 -translate-x-1/2">
-      <div className="dropdown dropdown-top">
+      <div className="dropdown-top dropdown">
         <label
           className="btn btn-primary btn-circle relative h-14 w-14 "
           tabIndex="0"
