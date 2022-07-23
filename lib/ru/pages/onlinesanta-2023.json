@@ -93,6 +93,11 @@
         "id": "onlineSanta2023FormFieldTelegram",
         "isTelegram": true,
         "placeholder": "Ваш Telegram"
+      },
+      {
+        "id": "onlineSanta2023FormFieldComments",
+        "isTextarea": true,
+        "placeholder": "Комментарии, пожелания, уточнения"
       }
     ]
   }

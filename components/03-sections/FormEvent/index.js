@@ -70,7 +70,7 @@ const FormEvent = ({ data }) => {
       } else {
         return (
           <input
-            className="input input-bordered input-primary w-full"
+            className="input input-primary w-full"
             type="text"
             placeholder={field.placeholder}
             key={field.id}
@@ -127,14 +127,22 @@ const FormEvent = ({ data }) => {
           )}
         </>
       );
-    } else {
+    } else if (!field.isTextarea) {
       return (
         <input
-          className="input input-bordered input-primary w-full md:w-1/2"
+          className="input input-primary w-full md:w-1/2"
           type="text"
           defaultValue={
             field.isTelegram && user.username && `https://t.me/${user.username}`
           }
+          placeholder={field.placeholder}
+          key={field.id}
+        />
+      );
+    } else {
+      return (
+        <textarea
+          className="textarea textarea-primary min-h-[12rem] w-full md:w-1/2"
           placeholder={field.placeholder}
           key={field.id}
         />
