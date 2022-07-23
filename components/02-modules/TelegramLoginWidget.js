@@ -22,7 +22,7 @@ const TelegramLoginWidget = () => {
         hash,
       },
       (res) => {
-        setCookie("TELEGRAM_AUTH_HASH", res.user.hash);
+        setCookie("TELEGRAM_AUTH", `${hash}&id=${id}`);
         setUser(res.user);
       }
     );

@@ -8,10 +8,22 @@ const relay = (query, method, body, onSuccess, onError) => {
   })
     .then((res) => res.json())
     .then((result) => {
-      console.info("Success!", result.serverMessage);
+      const { isError, isSuccess, serverMessage } = result;
 
-      if (onSuccess) {
-        onSuccess(result);
+      if (isSuccess) {
+        console.info("Success!", serverMessage);
+
+        if (onSuccess) {
+          onSuccess(result);
+        }
+      }
+
+      if (isError) {
+        console.info("Error!", serverMessage);
+
+        if (onError) {
+          onError();
+        }
       }
     })
     .catch((err) => {

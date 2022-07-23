@@ -8,10 +8,20 @@ const App = ({ Component, pageProps }) => {
   const [user, setUser] = useState(null);
 
   const checkAuthorization = () => {
-    const hash = getCookie("TELEGRAM_AUTH_HASH");
+    const telegramAuthCookie = getCookie("TELEGRAM_AUTH");
 
-    if (hash) {
-      relay("/api/user/get", "POST", hash, (res) => {
+    if (telegramAuthCookie) {
+      const hash = telegramAuthCookie.substring(
+        0,
+        telegramAuthCookie.indexOf("&id=")
+      );
+      const id = telegramAuthCookie.substring(
+        telegramAuthCookie.indexOf("&id=") + 4
+      );
+
+      console.log(hash, id);
+
+      relay("/api/user/get", "POST", { hash, id }, (res) => {
         const { user } = res;
 
         if (user) {

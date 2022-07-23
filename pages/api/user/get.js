@@ -7,21 +7,36 @@ import User from "models/User";
  */
 export default async function getUser(req, res) {
   try {
+    const { hash, id } = req.body;
+
     res.setHeader("Cache-Control", "s-maxage=10");
 
     await connectDB();
 
-    const user = await User.findOne({ hash: req.body }).exec();
+    const user = await User.findOne({ id }).exec();
 
     if (user) {
-      res.json({
-        user,
-        serverMessage: "The requested User has been provided.",
-      });
+      const userHash = JSON.parse(user.hash);
+
+      if (userHash.find((item) => item === hash)) {
+        res.json({
+          user,
+          serverMessage: "The requested User has been provided.",
+          isSuccess: true,
+        });
+      } else {
+        res.json({
+          serverMessage: "Provided hash is invalid.",
+          isError: true,
+        });
+      }
     } else {
-      res.json({ serverMessage: "The requested User does not exist." });
+      res.json({
+        serverMessage: "The requested User does not exist.",
+        isError: true,
+      });
     }
   } catch (err) {
-    res.json({ err });
+    res.json({ err, isError: true });
   }
 }
