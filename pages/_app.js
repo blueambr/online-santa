@@ -19,8 +19,6 @@ const App = ({ Component, pageProps }) => {
         telegramAuthCookie.indexOf("&id=") + 4
       );
 
-      console.log(hash, id);
-
       relay("/api/user/get", "POST", { hash, id }, (res) => {
         const { user } = res;
 
