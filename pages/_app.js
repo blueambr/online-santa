@@ -19,16 +19,15 @@ const App = ({ Component, pageProps }) => {
         telegramAuthCookie.indexOf("&id=") + 4
       );
 
-      relay("/api/user/get", "POST", { hash, id }, (res) => {
-        const { user } = res;
-
-        if (user) {
-          setUser(user);
-          return;
-        }
-
-        setUser(false);
-      });
+      relay(
+        "/api/user/get",
+        "POST",
+        { hash, id },
+        (res) => {
+          setUser(res.user);
+        },
+        () => setUser(false)
+      );
     } else {
       setUser(false);
     }
