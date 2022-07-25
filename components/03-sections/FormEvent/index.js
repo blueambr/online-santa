@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { clsx } from "clsx";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { nanoid } from "nanoid";
@@ -88,7 +89,7 @@ const FormEvent = ({ data }) => {
     });
   };
 
-  const renderFields = (field, errors) => {
+  const renderFields = (field, errors, touched) => {
     if (field.isDynamic) {
       return (
         <>
@@ -139,9 +140,10 @@ const FormEvent = ({ data }) => {
       return (
         <div className="inline-block md:w-1/2">
           <Field
-            className={`input input-primary w-full ${
-              errors[field.name] && "input-error"
-            }`}
+            className={clsx(
+              "input input-primary w-full",
+              errors[field.name] && touched[field.name] && "input-error"
+            )}
             type="text"
             name={field.name}
             placeholder={field.placeholder}
@@ -241,11 +243,13 @@ const FormEvent = ({ data }) => {
               setSubmitting(false);
             }}
           >
-            {({ errors, isSubmitting }) => (
+            {({ errors, touched, isSubmitting }) => (
               <Form className="text-center">
                 <ul className="grid gap-8" role="list">
                   {data.fields.map((field) => (
-                    <li key={field.id}>{renderFields(field, errors)}</li>
+                    <li key={field.id}>
+                      {renderFields(field, errors, touched)}
+                    </li>
                   ))}
                 </ul>
                 <button
