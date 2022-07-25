@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { nanoid } from "nanoid";
+import { object, string } from "yup";
 import GlobalContext from "context";
 import getIcon from "utils/getIcon";
 import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
@@ -10,6 +12,12 @@ const FormEvent = ({ data }) => {
   const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
+  const { validation } = data;
+  const { telegram } = validation;
+
+  const validationSchema = object().shape({
+    telegram: string().min(5, telegram.min).required(telegram.required),
+  });
 
   const onSelectInput = (e, id) => {
     let steamChosen;
@@ -80,7 +88,7 @@ const FormEvent = ({ data }) => {
     });
   };
 
-  const renderFields = (field) => {
+  const renderFields = (field, errors) => {
     if (field.isDynamic) {
       return (
         <>
@@ -129,20 +137,29 @@ const FormEvent = ({ data }) => {
       );
     } else if (!field.isTextarea) {
       return (
-        <input
-          className="input input-primary w-full md:w-1/2"
-          type="text"
-          defaultValue={
-            field.isTelegram && user.username && `https://t.me/${user.username}`
-          }
-          placeholder={field.placeholder}
-          key={field.id}
-        />
+        <div className="inline-block md:w-1/2">
+          <Field
+            className={`input input-primary w-full ${
+              errors[field.name] && "input-error"
+            }`}
+            type="text"
+            name={field.name}
+            placeholder={field.placeholder}
+            key={field.id}
+          />
+          <ErrorMessage
+            className="mt-2 w-full text-left font-light text-error"
+            name={field.name}
+            component="div"
+          />
+        </div>
       );
     } else {
       return (
-        <textarea
+        <Field
           className="textarea textarea-primary min-h-[12rem] w-full md:w-1/2"
+          as="textarea"
+          name={field.name}
           placeholder={field.placeholder}
           key={field.id}
         />
@@ -212,13 +229,35 @@ const FormEvent = ({ data }) => {
             <TelegramLoginWidget />
           </div>
         ) : (
-          <form className="text-center" action="#" method="post">
-            <ul className="grid gap-8" role="list">
-              {data.fields.map((field) => (
-                <li key={field.id}>{renderFields(field)}</li>
-              ))}
-            </ul>
-          </form>
+          <Formik
+            initialValues={{
+              telegram: user.username && `https://t.me/${user.username}`,
+              comments: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              console.log(JSON.stringify(values));
+
+              setSubmitting(false);
+            }}
+          >
+            {({ errors, isSubmitting }) => (
+              <Form className="text-center">
+                <ul className="grid gap-8" role="list">
+                  {data.fields.map((field) => (
+                    <li key={field.id}>{renderFields(field, errors)}</li>
+                  ))}
+                </ul>
+                <button
+                  className="btn btn-primary mt-8"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {data.submit}
+                </button>
+              </Form>
+            )}
+          </Formik>
         )}
       </section>
     </>

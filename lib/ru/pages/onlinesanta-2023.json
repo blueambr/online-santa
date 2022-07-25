@@ -91,14 +91,23 @@
       },
       {
         "id": "onlineSanta2023FormFieldTelegram",
+        "name": "telegram",
         "isTelegram": true,
         "placeholder": "Ваш Telegram"
       },
       {
         "id": "onlineSanta2023FormFieldComments",
+        "name": "comments",
         "isTextarea": true,
         "placeholder": "Комментарии, пожелания, уточнения"
       }
-    ]
+    ],
+    "validation": {
+      "telegram": {
+        "min": "Минимум 5 символов",
+        "required": "Обязательное поле"
+      }
+    },
+    "submit": "Зарегистрироваться"
   }
 }
