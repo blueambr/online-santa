@@ -12,12 +12,15 @@
         "isDynamic": true,
         "buttonAdd": "Добавить Игровую Платформу",
         "buttonRemove": "Убрать Игровую Платформу",
+        "entitiesName": "platforms",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
+          "name": "platforms",
           "fields": [
             {
               "id": "onlineSanta2023FormFieldPlatformsSelectPlatform",
               "hasSteam": true,
+              "name": "platform",
               "options": [
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
@@ -43,6 +46,7 @@
               "id": "onlineSanta2023FormFieldPlatformsSelectRegion",
               "forSteam": true,
               "steamChosen": false,
+              "name": "region",
               "placeholder": "Регион",
               "options": [
                 {
@@ -84,6 +88,7 @@
             },
             {
               "id": "onlineSanta2023FormFieldPlatformsInputAccountLink",
+              "name": "profile",
               "placeholder": "Профиль / Имя пользователя"
             }
           ]
@@ -103,6 +108,17 @@
       }
     ],
     "validation": {
+      "platform": {
+        "required": "Обязательное поле"
+      },
+      "region": {
+        "min": "Минимум 2 символа",
+        "required": "Обязательное поле"
+      },
+      "profile": {
+        "min": "Минимум 3 символа",
+        "required": "Обязательное поле"
+      },
       "telegram": {
         "min": "Минимум 5 символов",
         "required": "Обязательное поле"

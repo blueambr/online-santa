@@ -12,12 +12,15 @@
         "isDynamic": true,
         "buttonAdd": "Add Gaming Platform",
         "buttonRemove": "Remove Gaming Platform",
+        "entitiesName": "platforms",
         "entity": {
           "id": "onlineSanta2023FormFieldPlatformsEntity",
+          "name": "platforms",
           "fields": [
             {
               "id": "onlineSanta2023FormFieldPlatformsSelectPlatform",
               "hasSteam": true,
+              "name": "platform",
               "options": [
                 {
                   "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlaceholder",
@@ -43,6 +46,7 @@
               "id": "onlineSanta2023FormFieldPlatformsSelectRegion",
               "forSteam": true,
               "steamChosen": false,
+              "name": "region",
               "placeholder": "Region",
               "options": [
                 {
@@ -84,6 +88,7 @@
             },
             {
               "id": "onlineSanta2023FormFieldPlatformsInputAccountLink",
+              "name": "profile",
               "placeholder": "Profile / Username"
             }
           ]
@@ -103,6 +108,17 @@
       }
     ],
     "validation": {
+      "platform": {
+        "required": "Required"
+      },
+      "region": {
+        "min": "Minimum 2 characters",
+        "required": "Required"
+      },
+      "profile": {
+        "min": "Minimum 3 characters",
+        "required": "Required"
+      },
       "telegram": {
         "min": "Minimum 5 characters",
         "required": "Required"

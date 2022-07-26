@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { clsx } from "clsx";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { nanoid } from "nanoid";
-import { object, string } from "yup";
+import { array, object, string } from "yup";
 import GlobalContext from "context";
 import getIcon from "utils/getIcon";
 import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
@@ -13,10 +13,21 @@ const FormEvent = ({ data }) => {
   const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
+  const [isDataRun, setIsDataRun] = useState(false);
   const { validation } = data;
-  const { telegram } = validation;
+  const { platform, region, profile, telegram } = validation;
 
   const validationSchema = object().shape({
+    platforms: array().of(
+      object().shape({
+        platform: string().matches(/\b(?!default\b)\w+/, platform.required),
+        region: string()
+          .matches(/\b(?!default\b)\w+/, region.required)
+          .min(2, region.min)
+          .required(region.required),
+        profile: string().min(3, profile.min).required(profile.required),
+      })
+    ),
     telegram: string().min(5, telegram.min).required(telegram.required),
   });
 
@@ -46,95 +57,146 @@ const FormEvent = ({ data }) => {
     setDynamicEntities(updatedDynamicEntities);
   };
 
-  const renderEntityFields = (entity) => {
-    const { id } = entity;
+  const renderEntityFields = (entity, entityIndex, values) => {
+    const { id, name } = entity;
 
     return entity.fields.map((field) => {
       if (
         (field.options && !field.forSteam) ||
         (field.forSteam && field.steamChosen)
       ) {
+        if (field.forSteam && field.steamChosen) {
+          const steamRegionValue = values[name][entityIndex][field.name];
+
+          if (!steamRegionValue) {
+            values[name][entityIndex][field.name] = "default";
+          }
+        }
+
         return (
-          <select
-            className="select select-primary w-full"
-            defaultValue="default"
-            key={field.id}
-            onInput={(e) => field.hasSteam && onSelectInput(e, id)}
-          >
-            {field.options.map((option) => (
-              <option
-                key={option.id}
-                value={
-                  (option.isPlaceholder && "default") ||
-                  option.code ||
-                  option.value
-                }
-                disabled={option.isPlaceholder}
-              >
-                {option.value}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-col" key={field.id}>
+            <Field
+              className="select select-primary w-full"
+              as="select"
+              name={`${name}[${entityIndex}].${field.name}`}
+              onInput={(e) => field.hasSteam && onSelectInput(e, id)}
+            >
+              {field.options.map((option) => (
+                <option
+                  key={option.id}
+                  value={
+                    (option.isPlaceholder && "default") ||
+                    option.code ||
+                    option.value
+                  }
+                  disabled={option.isPlaceholder}
+                >
+                  {option.value}
+                </option>
+              ))}
+            </Field>
+            <ErrorMessage
+              className="mt-2 w-full text-left font-light text-error"
+              name={`${name}[${entityIndex}].${field.name}`}
+              component="div"
+            />
+          </div>
         );
       } else {
+        if (field.forSteam && !field.steamChosen) {
+          const steamRegionValue = values[name][entityIndex][field.name];
+
+          if (steamRegionValue) {
+            values[name][entityIndex][field.name] = "";
+          }
+        }
+
         return (
-          <input
-            className="input input-primary w-full"
-            type="text"
-            placeholder={field.placeholder}
-            key={field.id}
-          />
+          <div className="flex flex-col" key={field.id}>
+            <Field
+              className="input input-primary w-full"
+              type="text"
+              name={`${name}[${entityIndex}].${field.name}`}
+              placeholder={field.placeholder}
+            />
+            <ErrorMessage
+              className="mt-2 w-full text-left font-light text-error"
+              name={`${name}[${entityIndex}].${field.name}`}
+              component="div"
+            />
+          </div>
         );
       }
     });
   };
 
-  const renderFields = (field, errors, touched) => {
+  const renderFields = (field, values, touched, errors) => {
+    if (isDataRun) {
+      values[field.entitiesName] = [
+        {
+          platform: "default",
+          region: "",
+          profile: "",
+        },
+      ];
+
+      setIsDataRun(false);
+    }
+
     if (field.isDynamic) {
       return (
-        <>
-          {dynamicEntities.map((entity, entityIndex) => (
-            <div
-              className="mb-4 flex flex-col items-center gap-4 last-of-type:mb-0 md:flex-row md:items-start"
-              key={entity.id}
-            >
-              <div className="flex w-full flex-col gap-4 md:block md:columns-3">
-                {renderEntityFields(entity)}
-              </div>
-              {dynamicEntities.length >= 2 && (
+        <FieldArray
+          name={field.entitiesName}
+          render={({ push, remove }) => (
+            <div>
+              {dynamicEntities.map((entity, entityIndex) => (
+                <div
+                  className="mb-4 flex flex-col items-center gap-4 last-of-type:mb-0 md:flex-row md:items-start"
+                  key={entity.id}
+                >
+                  <div className="flex w-full flex-col gap-4 md:block md:columns-3">
+                    {renderEntityFields(entity, entityIndex, values)}
+                  </div>
+                  {dynamicEntities.length >= 2 && (
+                    <button
+                      className="btn btn-outline btn-error btn-square relative"
+                      title={field.buttonRemove}
+                      type="button"
+                      onClick={() => {
+                        setDynamicEntities(
+                          dynamicEntities.filter(
+                            (entity, index) => index !== entityIndex
+                          )
+                        );
+                        setCanAddEntities(true);
+                        remove(entityIndex);
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                        icon={getIcon("xmark")}
+                        size="2xl"
+                      />
+                    </button>
+                  )}
+                </div>
+              ))}
+              {canAddEntities && (
                 <button
-                  className="btn btn-outline btn-error btn-square relative"
-                  title={field.buttonRemove}
+                  className="btn btn-primary mt-8 inline-flex flex-nowrap gap-2"
                   type="button"
                   onClick={() => {
-                    setDynamicEntities(
-                      dynamicEntities.filter(
-                        (entity, index) => index !== entityIndex
-                      )
-                    );
-                    setCanAddEntities(true);
+                    createDynamicEntities();
+                    push({ platform: "default", region: "", profile: "" });
                   }}
                 >
-                  <FontAwesomeIcon
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                    icon={getIcon("xmark")}
-                    size="2xl"
-                  />
+                  <FontAwesomeIcon icon={getIcon("plus")} size="xl" />
+                  {field.buttonAdd}
                 </button>
               )}
             </div>
-          ))}
-          {canAddEntities && (
-            <button
-              className="btn btn-primary mt-8 inline-flex flex-nowrap gap-2"
-              type="button"
-              onClick={() => createDynamicEntities()}
-            >
-              <FontAwesomeIcon icon={getIcon("plus")} size="xl" />
-              {field.buttonAdd}
-            </button>
           )}
-        </>
+        />
       );
     } else if (!field.isTextarea) {
       return (
@@ -211,10 +273,8 @@ const FormEvent = ({ data }) => {
   };
 
   useEffect(() => {
+    setIsDataRun(true);
     createDynamicEntities(true);
-    document
-      .querySelectorAll("select")
-      .forEach((select) => (select.value = "default"));
   }, [data]);
 
   return (
@@ -233,6 +293,13 @@ const FormEvent = ({ data }) => {
         ) : (
           <Formik
             initialValues={{
+              platforms: [
+                {
+                  platform: "default",
+                  region: "",
+                  profile: "",
+                },
+              ],
               telegram: user.username && `https://t.me/${user.username}`,
               comments: "",
             }}
@@ -243,12 +310,12 @@ const FormEvent = ({ data }) => {
               setSubmitting(false);
             }}
           >
-            {({ errors, touched, isSubmitting }) => (
+            {({ values, touched, errors, isSubmitting }) => (
               <Form className="text-center">
                 <ul className="grid gap-8" role="list">
                   {data.fields.map((field) => (
                     <li key={field.id}>
-                      {renderFields(field, errors, touched)}
+                      {renderFields(field, values, touched, errors)}
                     </li>
                   ))}
                 </ul>
