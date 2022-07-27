@@ -67,12 +67,8 @@ const FormEvent = ({ data }) => {
         (field.options && !field.forSteam) ||
         (field.forSteam && field.steamChosen)
       ) {
-        if (field.forSteam && field.steamChosen && didPlatformChange) {
-          const steamRegionValue = values[name][entityIndex][field.name];
-
-          if (!steamRegionValue) {
-            values[name][entityIndex][field.name] = "default";
-          }
+        if (didPlatformChange && field.forSteam && field.steamChosen) {
+          values[name][entityIndex][field.name] = "default";
 
           setDidPlatformChange(false);
         }
@@ -107,12 +103,8 @@ const FormEvent = ({ data }) => {
           </div>
         );
       } else {
-        if (field.forSteam && !field.steamChosen && didPlatformChange) {
-          const steamRegionValue = values[name][entityIndex][field.name];
-
-          if (steamRegionValue) {
-            values[name][entityIndex][field.name] = "";
-          }
+        if (didPlatformChange && field.forSteam && !field.steamChosen) {
+          values[name][entityIndex][field.name] = "";
 
           setDidPlatformChange(false);
         }
