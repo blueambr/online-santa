@@ -198,7 +198,7 @@ const FormEvent = ({ data }) => {
       );
     } else if (!field.isTextarea) {
       return (
-        <div className="inline-block md:w-1/2">
+        <div className="mx-auto w-full md:w-1/2">
           <Field
             className={clsx(
               "input input-primary w-full",
