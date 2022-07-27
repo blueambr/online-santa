@@ -261,6 +261,14 @@ const FormEvent = ({ data }) => {
                 splitColon[index + 1] = idItemSplitComma.join();
               }
 
+              if (item.includes('"steamChosen"')) {
+                const idItemSplitComma = splitColon[index + 1].split(",");
+
+                idItemSplitComma[0] = false;
+
+                splitColon[index + 1] = idItemSplitComma.join();
+              }
+
               return item;
             });
 
