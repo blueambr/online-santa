@@ -13,7 +13,7 @@ const FormEvent = ({ data }) => {
   const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
-  const [didPlatformChange, setDidPlatformChange] = useState(false);
+  const [changedPlatform, setChangedPlatform] = useState([false, null]);
   const [isDataRun, setIsDataRun] = useState(false);
   const { validation } = data;
   const { platform, region, profile, telegram } = validation;
@@ -32,7 +32,7 @@ const FormEvent = ({ data }) => {
     telegram: string().min(5, telegram.min).required(telegram.required),
   });
 
-  const onSelectInput = (e, id) => {
+  const onSelectInput = (e, id, entityIndex) => {
     let steamChosen;
 
     if (e.target.value === "steam") {
@@ -55,7 +55,7 @@ const FormEvent = ({ data }) => {
       return entity;
     });
 
-    setDidPlatformChange(true);
+    setChangedPlatform([true, entityIndex]);
     setDynamicEntities(updatedDynamicEntities);
   };
 
@@ -67,10 +67,15 @@ const FormEvent = ({ data }) => {
         (field.options && !field.forSteam) ||
         (field.forSteam && field.steamChosen)
       ) {
-        if (didPlatformChange && field.forSteam && field.steamChosen) {
+        if (
+          changedPlatform[0] &&
+          changedPlatform[1] === entityIndex &&
+          field.forSteam &&
+          field.steamChosen
+        ) {
           values[name][entityIndex][field.name] = "default";
 
-          setDidPlatformChange(false);
+          setChangedPlatform([false, null]);
         }
 
         return (
@@ -83,7 +88,7 @@ const FormEvent = ({ data }) => {
                 handleChange(e);
 
                 if (field.hasSteam) {
-                  onSelectInput(e, id);
+                  onSelectInput(e, id, entityIndex);
                 }
               }}
             >
@@ -109,10 +114,15 @@ const FormEvent = ({ data }) => {
           </div>
         );
       } else {
-        if (didPlatformChange && field.forSteam && !field.steamChosen) {
+        if (
+          changedPlatform[0] &&
+          changedPlatform[1] === entityIndex &&
+          field.forSteam &&
+          !field.steamChosen
+        ) {
           values[name][entityIndex][field.name] = "";
 
-          setDidPlatformChange(false);
+          setChangedPlatform([false, null]);
         }
 
         return (
