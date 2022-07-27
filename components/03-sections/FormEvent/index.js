@@ -146,13 +146,15 @@ const FormEvent = ({ data }) => {
 
   const renderFields = (field, values, touched, handleChange, errors) => {
     if (isDataRun) {
-      values[field.entitiesName] = [
-        {
-          platform: "default",
-          region: "",
-          profile: "",
-        },
-      ];
+      if (field.entitiesName) {
+        values[field.entitiesName] = [
+          {
+            platform: "default",
+            region: "",
+            profile: "",
+          },
+        ];
+      }
 
       setIsDataRun(false);
     }
