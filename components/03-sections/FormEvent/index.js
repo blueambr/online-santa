@@ -13,6 +13,7 @@ const FormEvent = ({ data }) => {
   const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
+  const [didPlatformChange, setDidPlatformChange] = useState(false);
   const [isDataRun, setIsDataRun] = useState(false);
   const { validation } = data;
   const { platform, region, profile, telegram } = validation;
@@ -54,6 +55,7 @@ const FormEvent = ({ data }) => {
       return entity;
     });
 
+    setDidPlatformChange(true);
     setDynamicEntities(updatedDynamicEntities);
   };
 
@@ -65,12 +67,14 @@ const FormEvent = ({ data }) => {
         (field.options && !field.forSteam) ||
         (field.forSteam && field.steamChosen)
       ) {
-        if (field.forSteam && field.steamChosen) {
+        if (field.forSteam && field.steamChosen && didPlatformChange) {
           const steamRegionValue = values[name][entityIndex][field.name];
 
           if (!steamRegionValue) {
             values[name][entityIndex][field.name] = "default";
           }
+
+          setDidPlatformChange(false);
         }
 
         return (
@@ -103,12 +107,14 @@ const FormEvent = ({ data }) => {
           </div>
         );
       } else {
-        if (field.forSteam && !field.steamChosen) {
+        if (field.forSteam && !field.steamChosen && didPlatformChange) {
           const steamRegionValue = values[name][entityIndex][field.name];
 
           if (steamRegionValue) {
             values[name][entityIndex][field.name] = "";
           }
+
+          setDidPlatformChange(false);
         }
 
         return (
