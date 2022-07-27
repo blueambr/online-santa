@@ -59,7 +59,7 @@ const FormEvent = ({ data }) => {
     setDynamicEntities(updatedDynamicEntities);
   };
 
-  const renderEntityFields = (entity, entityIndex, values) => {
+  const renderEntityFields = (entity, entityIndex, values, handleChange) => {
     const { id, name } = entity;
 
     return entity.fields.map((field) => {
@@ -79,7 +79,13 @@ const FormEvent = ({ data }) => {
               className="select select-primary w-full"
               as="select"
               name={`${name}[${entityIndex}].${field.name}`}
-              onInput={(e) => field.hasSteam && onSelectInput(e, id)}
+              onChange={(e) => {
+                handleChange(e);
+
+                if (field.hasSteam) {
+                  onSelectInput(e, id);
+                }
+              }}
             >
               {field.options.map((option) => (
                 <option
@@ -128,7 +134,7 @@ const FormEvent = ({ data }) => {
     });
   };
 
-  const renderFields = (field, values, touched, errors) => {
+  const renderFields = (field, values, touched, handleChange, errors) => {
     if (isDataRun) {
       values[field.entitiesName] = [
         {
@@ -153,7 +159,12 @@ const FormEvent = ({ data }) => {
                   key={entity.id}
                 >
                   <div className="flex w-full flex-col gap-4 md:block md:columns-3">
-                    {renderEntityFields(entity, entityIndex, values)}
+                    {renderEntityFields(
+                      entity,
+                      entityIndex,
+                      values,
+                      handleChange
+                    )}
                   </div>
                   {dynamicEntities.length >= 2 && (
                     <button
@@ -308,12 +319,18 @@ const FormEvent = ({ data }) => {
               setSubmitting(false);
             }}
           >
-            {({ values, touched, errors, isSubmitting }) => (
+            {({ values, touched, handleChange, errors, isSubmitting }) => (
               <Form className="text-center">
                 <ul className="grid gap-8" role="list">
                   {data.fields.map((field) => (
                     <li key={field.id}>
-                      {renderFields(field, values, touched, errors)}
+                      {renderFields(
+                        field,
+                        values,
+                        touched,
+                        handleChange,
+                        errors
+                      )}
                     </li>
                   ))}
                 </ul>
