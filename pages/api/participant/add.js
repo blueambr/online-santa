@@ -1,5 +1,5 @@
 import { model, models } from "mongoose";
-import participantSchemas from "schemas/participant";
+import participantSchemas from "schemas/Participant";
 import connectDB from "utils/connectDB";
 
 /**
