@@ -6,9 +6,10 @@ import { nanoid } from "nanoid";
 import { array, object, string } from "yup";
 import GlobalContext from "context";
 import getIcon from "utils/getIcon";
+import relay from "utils/relay";
 import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 
-const FormEvent = ({ data }) => {
+const FormEvent = ({ data, event }) => {
   const globalContext = useContext(GlobalContext);
   const { user } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
@@ -16,6 +17,7 @@ const FormEvent = ({ data }) => {
   const [changedPlatform, setChangedPlatform] = useState([false, null]);
   const [isDataRun, setIsDataRun] = useState(false);
   const { validation } = data;
+  const { collectionRef, collectionSchema } = event;
   const { platform, region, profile, telegram } = validation;
 
   const validationSchema = object().shape({
@@ -335,6 +337,12 @@ const FormEvent = ({ data }) => {
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
               console.log(JSON.stringify(values));
+
+              relay("/api/participant/add", "POST", {
+                collectionRef,
+                collectionSchema,
+                id: user.id,
+              });
 
               setSubmitting(false);
             }}

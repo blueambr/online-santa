@@ -1,16 +1,5 @@
-import { Schema, model, models } from "mongoose";
-
-const eventSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  collectionRef: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-});
+import { model, models } from "mongoose";
+import eventSchema from "schemas/Event";
 
 const Event = models.Event || model("Event", eventSchema);
 
