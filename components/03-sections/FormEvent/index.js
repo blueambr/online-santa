@@ -37,6 +37,8 @@ const FormEvent = ({ data, event }) => {
   const onSelectInput = (e, id, entityIndex) => {
     let steamChosen;
 
+    setIsDataRun(false);
+
     if (e.target.value === "steam") {
       steamChosen = true;
     } else {
@@ -44,17 +46,21 @@ const FormEvent = ({ data, event }) => {
     }
 
     const updatedDynamicEntities = dynamicEntities.map((entity) => {
-      if (entity.id === id) {
-        entity.fields.forEach((field) => {
-          if (field.forSteam) {
-            field.steamChosen = steamChosen;
-            return field;
+      const entityObj = { ...entity };
+
+      if (entityObj.id === id) {
+        entityObj.fields = entity.fields.map((field) => {
+          const fieldObj = { ...field };
+
+          if (fieldObj.forSteam) {
+            fieldObj.steamChosen = steamChosen;
           }
-          return field;
+
+          return fieldObj;
         });
-        return entity;
       }
-      return entity;
+
+      return entityObj;
     });
 
     setChangedPlatform([true, entityIndex]);
@@ -76,8 +82,6 @@ const FormEvent = ({ data, event }) => {
           field.steamChosen
         ) {
           values[name][entityIndex][field.name] = "default";
-
-          setChangedPlatform([false, null]);
         }
 
         return (
@@ -88,6 +92,7 @@ const FormEvent = ({ data, event }) => {
               name={`${name}[${entityIndex}].${field.name}`}
               onChange={(e) => {
                 handleChange(e);
+                setChangedPlatform([false, null]);
 
                 if (field.hasSteam) {
                   onSelectInput(e, id, entityIndex);
@@ -123,8 +128,6 @@ const FormEvent = ({ data, event }) => {
           !field.steamChosen
         ) {
           values[name][entityIndex][field.name] = "";
-
-          setChangedPlatform([false, null]);
         }
 
         return (
@@ -134,6 +137,10 @@ const FormEvent = ({ data, event }) => {
               type="text"
               name={`${name}[${entityIndex}].${field.name}`}
               placeholder={field.placeholder}
+              onChange={(e) => {
+                handleChange(e);
+                setChangedPlatform([false, null]);
+              }}
             />
             <ErrorMessage
               className="mt-2 w-full text-left font-light text-error"
@@ -157,8 +164,6 @@ const FormEvent = ({ data, event }) => {
           },
         ];
       }
-
-      setIsDataRun(false);
     }
 
     if (field.isDynamic) {
@@ -305,6 +310,7 @@ const FormEvent = ({ data, event }) => {
 
   useEffect(() => {
     setIsDataRun(true);
+    setChangedPlatform([false, null]);
     createDynamicEntities(true);
   }, [data]);
 
