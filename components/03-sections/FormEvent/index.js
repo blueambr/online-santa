@@ -349,15 +349,23 @@ const FormEvent = ({ data, event }) => {
                 null;
               const steamRegion = steam ? steam.region : null;
 
-              relay("/api/participant/add", "POST", {
-                collectionRef,
-                collectionSchema,
-                id: user.id,
-                telegram,
-                comments,
-                steamRegion,
-                platforms,
-              });
+              relay(
+                "/api/participant/add",
+                "POST",
+                {
+                  collectionRef,
+                  collectionSchema,
+                  id: user.id,
+                  telegram,
+                  comments,
+                  steamRegion,
+                  platforms,
+                },
+                () => {
+                  alert("SUCCESS!!");
+                },
+                () => alert("ALREADY SUBMITTED OR SERVER ERROR!!")
+              );
 
               setSubmitting(false);
             }}

@@ -29,6 +29,10 @@
                     "value": "Gaming Platform"
                   },
                   {
+                    "id": "onlineSanta2023FormFieldPlatformsSelectPlatformNintendo",
+                    "value": "Nintendo"
+                  },
+                  {
                     "id": "onlineSanta2023FormFieldPlatformsSelectPlatformPlayStation",
                     "value": "PlayStation"
                   },
