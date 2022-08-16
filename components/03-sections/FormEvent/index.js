@@ -342,12 +342,20 @@ const FormEvent = ({ data, event }) => {
             }}
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
-              console.log(JSON.stringify(values));
+              const { telegram, comments, platforms } = values;
+              const steam =
+                platforms.find((platform) => platform.platform === "steam") ||
+                null;
+              const steamRegion = steam ? steam.region : null;
 
               relay("/api/participant/add", "POST", {
                 collectionRef,
                 collectionSchema,
                 id: user.id,
+                telegram,
+                comments,
+                steamRegion,
+                platforms,
               });
 
               setSubmitting(false);

@@ -8,7 +8,15 @@ import connectDB from "utils/connectDB";
  */
 export default async function addParticipant(req, res) {
   try {
-    const { collectionRef, collectionSchema, id } = req.body;
+    const {
+      collectionRef,
+      collectionSchema,
+      id,
+      telegram,
+      comments,
+      steamRegion,
+      platforms,
+    } = req.body;
     const Participant =
       models[collectionRef] ||
       model(collectionRef, participantSchemas[collectionSchema]);
@@ -28,6 +36,10 @@ export default async function addParticipant(req, res) {
     } else {
       const participant = await Participant.create({
         id,
+        telegram,
+        comments,
+        steamRegion,
+        platforms,
       });
 
       res.json({

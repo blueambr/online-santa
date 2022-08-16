@@ -6,6 +6,20 @@ const gamingPlatformsParticipantSchema = new Schema({
     required: true,
     unique: true,
   },
+  telegram: {
+    type: String,
+    required: true,
+  },
+  comments: {
+    type: String,
+  },
+  steamRegion: {
+    type: String,
+  },
+  platforms: {
+    type: Array,
+    required: true,
+  },
 });
 
 const participantSchemas = {
