@@ -215,6 +215,7 @@ const FormEvent = ({ data, event }) => {
                   className="btn btn-primary mt-8 inline-flex flex-nowrap gap-2"
                   type="button"
                   onClick={() => {
+                    setIsDataRun(false);
                     createDynamicEntities();
                     push({ platform: "default", region: "", profile: "" });
                   }}
