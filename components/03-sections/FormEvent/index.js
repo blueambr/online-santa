@@ -25,7 +25,7 @@ const FormEvent = ({ data, event }) => {
       object().shape({
         platform: string().matches(/\b(?!default\b)\w+/, platform.required),
         region: string()
-          .matches(/\b(?!default\b)\w+/, region.required)
+          .matches(/^(?!.*default)[A-Za-z\u0400-\u04FF.-\s]*/, region.required)
           .min(2, region.min)
           .required(region.required),
         profile: string().min(3, profile.min).required(profile.required),
@@ -140,6 +140,7 @@ const FormEvent = ({ data, event }) => {
               onChange={(e) => {
                 handleChange(e);
                 setChangedPlatform([false, null]);
+                setIsDataRun(false);
               }}
             />
             <ErrorMessage
