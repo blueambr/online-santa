@@ -6,6 +6,9 @@ const gamingPlatformsParticipantSchema = new Schema({
     required: true,
     unique: true,
   },
+  recipient: {
+    type: String,
+  },
   telegram: {
     type: String,
     required: true,

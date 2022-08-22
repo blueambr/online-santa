@@ -1,0 +1,14 @@
+{
+  "page": {
+    "title": "Online Santa Admin Panel"
+  },
+  "hero": {
+    "name": "Admin Panel"
+  },
+  "panel": [
+    {
+      "id": "adminPanelItem1",
+      "title": "Enter the Collection Reference to run the Event's algorithm"
+    }
+  ]
+}

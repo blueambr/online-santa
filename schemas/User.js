@@ -20,6 +20,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+  },
+  isMod: {
+    type: Boolean,
+  },
 });
 
 export default userSchema;

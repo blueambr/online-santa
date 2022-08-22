@@ -4,7 +4,7 @@ import Event from "models/Event";
 import data from "lib/en/pages/event";
 import dataRu from "lib/ru/pages/event";
 import Layout from "@/layout";
-import HeroEvent from "@/sections/HeroEvent";
+import Hero from "@/sections/Hero";
 import FormEvent from "@/sections/FormEvent";
 
 const EventPage = ({ event }) => {
@@ -26,7 +26,7 @@ const EventPage = ({ event }) => {
   return (
     <>
       <Layout data={page}>
-        <HeroEvent data={hero} />
+        <Hero data={hero} />
         <FormEvent data={form} event={event} />
       </Layout>
     </>

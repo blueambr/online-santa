@@ -1,4 +1,4 @@
-const HeroEvent = ({ data }) => {
+const Hero = ({ data }) => {
   const { name } = data;
 
   return (
@@ -10,4 +10,4 @@ const HeroEvent = ({ data }) => {
   );
 };
 
-export default HeroEvent;
+export default Hero;
