@@ -1,12 +1,67 @@
+import { clsx } from "clsx";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { object, string } from "yup";
+import relay from "utils/relay";
+
 const AdminPanel = ({ data }) => {
+  const { actions, validation } = data;
+  const { eventAlgo } = validation;
+
+  const validationSchema = object().shape({
+    eventAlgo: string().min(3, eventAlgo.min).required(eventAlgo.required),
+  });
+
   return (
     <section className="container py-12 lg:py-16">
       <ul role="list">
-        {data.map((item) => (
+        {actions.map((item) => (
           <li key={item.id}>
-            <h2 className="font-sans text-lg font-normal lg:text-xl">
-              {item.title}
-            </h2>
+            <Formik
+              initialValues={{
+                eventAlgo: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                const { eventAlgo } = values;
+
+                setSubmitting(false);
+              }}
+            >
+              {({ touched, errors, isSubmitting }) => (
+                <Form className="text-center">
+                  <h2 className="font-sans text-lg font-normal lg:text-xl">
+                    {item.title}
+                  </h2>
+                  <div className="mt-4 flex justify-center">
+                    <div className="w-full md:w-1/2">
+                      <Field
+                        className={clsx(
+                          "input input-primary w-full",
+                          errors[item.name] &&
+                            touched[item.name] &&
+                            "input-error"
+                        )}
+                        type="text"
+                        name={item.name}
+                        placeholder={item.placeholder}
+                      />
+                      <ErrorMessage
+                        className="mt-2 w-full text-left font-light text-error"
+                        name={item.name}
+                        component="div"
+                      />
+                    </div>
+                    <button
+                      className="btn btn-primary ml-4"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
+                      {item.submit}
+                    </button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </li>
         ))}
       </ul>

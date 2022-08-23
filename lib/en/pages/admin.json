@@ -5,10 +5,21 @@
   "hero": {
     "name": "Admin Panel"
   },
-  "panel": [
-    {
-      "id": "adminPanelItem1",
-      "title": "Enter the Collection Reference to run the Event's algorithm"
+  "panel": {
+    "actions": [
+      {
+        "id": "adminPanelEventAlgorithm",
+        "title": "Enter the Collection Reference to run the Event's algorithm",
+        "name": "eventAlgo",
+        "placeholder": "Collection Reference",
+        "submit": "Run"
+      }
+    ],
+    "validation": {
+      "eventAlgo": {
+        "min": "Minimum 3 characters",
+        "required": "Required"
+      }
     }
-  ]
+  }
 }

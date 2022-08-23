@@ -5,10 +5,21 @@
   "hero": {
     "name": "Админка"
   },
-  "panel": [
-    {
-      "id": "adminPanelItem1",
-      "title": "Введите Ссылку на Коллекцию для запуска алгоритма События"
+  "panel": {
+    "actions": [
+      {
+        "id": "adminPanelItem1",
+        "title": "Введите Ссылку на Коллекцию для запуска алгоритма События",
+        "name": "eventAlgo",
+        "placeholder": "Ссылка на Коллекцию",
+        "submit": "Запуск"
+      }
+    ],
+    "validation": {
+      "eventAlgo": {
+        "min": "Минимум 3 символа",
+        "required": "Обязательное поле"
+      }
     }
-  ]
+  }
 }
