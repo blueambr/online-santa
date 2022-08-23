@@ -1,5 +1,5 @@
-import connectDB from "utils/connectDB";
 import User from "models/User";
+import connectDB from "utils/connectDB";
 
 /**
  * @param {import('next').NextApiRequest} req
