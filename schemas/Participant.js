@@ -6,6 +6,9 @@ const gamingPlatformsParticipantSchema = new Schema({
     required: true,
     unique: true,
   },
+  hasSanta: {
+    type: Boolean,
+  },
   recipient: {
     type: String,
   },

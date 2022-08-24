@@ -25,11 +25,148 @@ export default async function runEvent(req, res) {
       const participants = await Participant.find().exec();
 
       if (event.collectionSchema === "gaming-platforms") {
-        participants.forEach((participant) => {
-          if (participant.steamRegion) {
-            // TODO: Steam algorithm
+        // Prices: eu > kz > cis > ua > ru > tr
+        const steamRegions = ["eu", "kz", "cis", "ua", "ru", "tr"];
+        const steam = {
+          eu: [],
+          kz: [],
+          cis: [],
+          ua: [],
+          ru: [],
+          tr: [],
+        };
+        const noSteam = [];
+
+        participants.forEach(async (participant) => {
+          const psr = participant.steamRegion;
+
+          if (psr) {
+            const matchedSteamRegion = steamRegions.find((sr) => sr === psr);
+
+            steam[matchedSteamRegion].push(participant);
           } else {
-            // TODO: No Steam algorithm
+            noSteam.push(participant);
+          }
+        });
+
+        steamRegions.forEach(async (sr) => {
+          if (steam[sr].length) {
+            if (steam[sr].length === 1) {
+              if (sr === "eu" && steam.kz.length) {
+                const kz = steam.kz.find(
+                  (participant) => !participant.hasSanta
+                );
+
+                await Participant.updateOne(
+                  { id: kz.id },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: steam.eu[0].id },
+                  {
+                    recipient: kz.id,
+                  }
+                );
+              }
+
+              if (sr === "kz" && steam.cis.length) {
+                const cis = steam.cis.find(
+                  (participant) => !participant.hasSanta
+                );
+
+                await Participant.updateOne(
+                  { id: cis.id },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: steam.kz[0].id },
+                  {
+                    recipient: cis.id,
+                  }
+                );
+              }
+
+              if (sr === "cis" && steam.ua.length) {
+                const ua = steam.ua.find(
+                  (participant) => !participant.hasSanta
+                );
+
+                await Participant.updateOne(
+                  { id: ua.id },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: steam.cis[0].id },
+                  {
+                    recipient: ua.id,
+                  }
+                );
+              }
+
+              if (sr === "ua" && steam.ru.length) {
+                const ru = steam.ru.find(
+                  (participant) => !participant.hasSanta
+                );
+
+                console.log(ru);
+
+                await Participant.updateOne(
+                  { id: ru.id },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: steam.ua[0].id },
+                  {
+                    recipient: ru.id,
+                  }
+                );
+              }
+
+              if (sr === "ru" && steam.tr.length) {
+                const tr = steam.tr.find(
+                  (participant) => !participant.hasSanta
+                );
+
+                await Participant.updateOne(
+                  { id: tr.id },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: steam.ru[0].id },
+                  {
+                    recipient: tr.id,
+                  }
+                );
+              }
+
+              if (sr === "tr") {
+                await Participant.updateOne(
+                  { id: steam.tr[0].id },
+                  {
+                    recipient: null,
+                  }
+                );
+              }
+            } else if (steam[sr].length === 2) {
+              // 1 -> 2 -> a cheaper region, if exists, otherwise { recipient: null }
+            } else {
+              // 1 -> 2 -> 3 -> ... -> 1
+            }
           }
         });
       }
