@@ -37,6 +37,30 @@ export default async function runEvent(req, res) {
         };
         const noSteam = [];
 
+        const hasParticipantWithoutSanta = (steamRegion) =>
+          steam[steamRegion].find((participant) => !participant.hasSanta);
+
+        const updateParticipants = async (recipientSteamRegion, santaId) => {
+          const recipient = steam[recipientSteamRegion].find(
+            (participant) => !participant.hasSanta
+          );
+          const { id: recipientId } = recipient;
+
+          await Participant.updateOne(
+            { id: recipientId },
+            {
+              hasSanta: true,
+            }
+          );
+
+          await Participant.updateOne(
+            { id: santaId },
+            {
+              recipient: recipientId,
+            }
+          );
+        };
+
         participants.forEach(async (participant) => {
           const psr = participant.steamRegion;
 
@@ -52,106 +76,130 @@ export default async function runEvent(req, res) {
         steamRegions.forEach(async (sr) => {
           if (steam[sr].length) {
             if (steam[sr].length === 1) {
-              if (sr === "eu" && steam.kz.length) {
-                const kz = steam.kz.find(
-                  (participant) => !participant.hasSanta
-                );
+              // 1 -> a cheaper region, if exists, otherwise — { recipient: null }
+              if (sr === "eu") {
+                const santaId = steam.eu[0].id;
 
-                await Participant.updateOne(
-                  { id: kz.id },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: steam.eu[0].id },
-                  {
-                    recipient: kz.id,
-                  }
-                );
+                if (steam.kz.length && hasParticipantWithoutSanta("kz")) {
+                  updateParticipants("kz", santaId);
+                } else if (
+                  steam.cis.length &&
+                  hasParticipantWithoutSanta("cis")
+                ) {
+                  updateParticipants("cis", santaId);
+                } else if (
+                  steam.ua.length &&
+                  hasParticipantWithoutSanta("ua")
+                ) {
+                  updateParticipants("ua", santaId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", santaId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", santaId);
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
               }
 
-              if (sr === "kz" && steam.cis.length) {
-                const cis = steam.cis.find(
-                  (participant) => !participant.hasSanta
-                );
+              if (sr === "kz") {
+                const santaId = steam.kz[0].id;
 
-                await Participant.updateOne(
-                  { id: cis.id },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: steam.kz[0].id },
-                  {
-                    recipient: cis.id,
-                  }
-                );
+                if (steam.cis.length && hasParticipantWithoutSanta("cis")) {
+                  updateParticipants("cis", santaId);
+                } else if (
+                  steam.ua.length &&
+                  hasParticipantWithoutSanta("ua")
+                ) {
+                  updateParticipants("ua", santaId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", santaId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", santaId);
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
               }
 
-              if (sr === "cis" && steam.ua.length) {
-                const ua = steam.ua.find(
-                  (participant) => !participant.hasSanta
-                );
+              if (sr === "cis") {
+                const santaId = steam.cis[0].id;
 
-                await Participant.updateOne(
-                  { id: ua.id },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: steam.cis[0].id },
-                  {
-                    recipient: ua.id,
-                  }
-                );
+                if (steam.ua.length && hasParticipantWithoutSanta("ua")) {
+                  updateParticipants("ua", santaId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", santaId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", santaId);
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
               }
 
-              if (sr === "ua" && steam.ru.length) {
-                const ru = steam.ru.find(
-                  (participant) => !participant.hasSanta
-                );
+              if (sr === "ua") {
+                const santaId = steam.ua[0].id;
 
-                console.log(ru);
-
-                await Participant.updateOne(
-                  { id: ru.id },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: steam.ua[0].id },
-                  {
-                    recipient: ru.id,
-                  }
-                );
+                if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
+                  updateParticipants("ru", santaId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", santaId);
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
               }
 
-              if (sr === "ru" && steam.tr.length) {
-                const tr = steam.tr.find(
-                  (participant) => !participant.hasSanta
-                );
+              if (sr === "ru") {
+                const santaId = steam.ru[0].id;
 
-                await Participant.updateOne(
-                  { id: tr.id },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: steam.ru[0].id },
-                  {
-                    recipient: tr.id,
-                  }
-                );
+                if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
+                  updateParticipants("tr", santaId);
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
               }
 
               if (sr === "tr") {
@@ -163,9 +211,153 @@ export default async function runEvent(req, res) {
                 );
               }
             } else if (steam[sr].length === 2) {
-              // 1 -> 2 -> a cheaper region, if exists, otherwise { recipient: null }
+              // 1 -> 2 -> a cheaper region, if exists, otherwise — { recipient: null }
+              const santa = steam[sr][1].hasSanta ? steam[sr][1] : steam[sr][0];
+              const { id: santaId } = santa;
+              const recipient = !steam[sr][1].hasSanta
+                ? steam[sr][1]
+                : steam[sr][0];
+              const { id: recipientId } = recipient;
+
+              await Participant.updateOne(
+                { id: recipientId },
+                {
+                  hasSanta: true,
+                }
+              );
+
+              await Participant.updateOne(
+                { id: santaId },
+                {
+                  recipient: recipientId,
+                }
+              );
+
+              if (sr === "eu") {
+                if (steam.kz.length && hasParticipantWithoutSanta("kz")) {
+                  updateParticipants("kz", recipientId);
+                } else if (
+                  steam.cis.length &&
+                  hasParticipantWithoutSanta("cis")
+                ) {
+                  updateParticipants("cis", recipientId);
+                } else if (
+                  steam.ua.length &&
+                  hasParticipantWithoutSanta("ua")
+                ) {
+                  updateParticipants("ua", recipientId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", recipientId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", recipientId);
+                } else {
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              }
+
+              if (sr === "kz") {
+                if (steam.cis.length && hasParticipantWithoutSanta("cis")) {
+                  updateParticipants("cis", recipientId);
+                } else if (
+                  steam.ua.length &&
+                  hasParticipantWithoutSanta("ua")
+                ) {
+                  updateParticipants("ua", recipientId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", recipientId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", recipientId);
+                } else {
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              }
+
+              if (sr === "cis") {
+                if (steam.ua.length && hasParticipantWithoutSanta("ua")) {
+                  updateParticipants("ua", recipientId);
+                } else if (
+                  steam.ru.length &&
+                  hasParticipantWithoutSanta("ru")
+                ) {
+                  updateParticipants("ru", recipientId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", recipientId);
+                } else {
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              }
+
+              if (sr === "ua") {
+                if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
+                  updateParticipants("ru", recipientId);
+                } else if (
+                  steam.tr.length &&
+                  hasParticipantWithoutSanta("tr")
+                ) {
+                  updateParticipants("tr", recipientId);
+                } else {
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              }
+
+              if (sr === "ru") {
+                if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
+                  updateParticipants("tr", recipientId);
+                } else {
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              }
+
+              if (sr === "tr") {
+                await Participant.updateOne(
+                  { id: recipientId },
+                  {
+                    recipient: null,
+                  }
+                );
+              }
             } else {
-              // 1 -> 2 -> 3 -> ... -> 1
+              // 1 -> 2 -> ... -> 1
             }
           }
         });
