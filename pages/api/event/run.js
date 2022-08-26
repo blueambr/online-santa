@@ -78,81 +78,71 @@ export default async function runEvent(req, res) {
 
         const updateParticipantCrossRegions = async (sr, santaId) => {
           if (sr === "eu") {
-            if (steam.kz.length && (await participantWithoutSanta("kz"))) {
+            const pwsKz = await participantWithoutSanta("kz");
+            const pwsCis = await participantWithoutSanta("cis");
+            const pwsUa = await participantWithoutSanta("ua");
+            const pwsRu = await participantWithoutSanta("ru");
+            const pwsTr = await participantWithoutSanta("tr");
+
+            if (steam.kz.length && pwsKz) {
               await updateParticipants("kz", santaId);
-            } else if (
-              steam.cis.length &&
-              (await participantWithoutSanta("cis"))
-            ) {
+            } else if (steam.cis.length && pwsCis) {
               await updateParticipants("cis", santaId);
-            } else if (
-              steam.ua.length &&
-              (await participantWithoutSanta("ua"))
-            ) {
+            } else if (steam.ua.length && pwsUa) {
               await updateParticipants("ua", santaId);
-            } else if (
-              steam.ru.length &&
-              (await participantWithoutSanta("ru"))
-            ) {
+            } else if (steam.ru.length && pwsRu) {
               await updateParticipants("ru", santaId);
-            } else if (
-              steam.tr.length &&
-              (await participantWithoutSanta("tr"))
-            ) {
+            } else if (steam.tr.length && pwsTr) {
               await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "kz") {
-            if (steam.cis.length && (await participantWithoutSanta("cis"))) {
+            const pwsCis = await participantWithoutSanta("cis");
+            const pwsUa = await participantWithoutSanta("ua");
+            const pwsRu = await participantWithoutSanta("ru");
+            const pwsTr = await participantWithoutSanta("tr");
+
+            if (steam.cis.length && pwsCis) {
               await updateParticipants("cis", santaId);
-            } else if (
-              steam.ua.length &&
-              (await participantWithoutSanta("ua"))
-            ) {
+            } else if (steam.ua.length && pwsUa) {
               await updateParticipants("ua", santaId);
-            } else if (
-              steam.ru.length &&
-              (await participantWithoutSanta("ru"))
-            ) {
+            } else if (steam.ru.length && pwsRu) {
               await updateParticipants("ru", santaId);
-            } else if (
-              steam.tr.length &&
-              (await participantWithoutSanta("tr"))
-            ) {
+            } else if (steam.tr.length && pwsTr) {
               await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "cis") {
-            if (steam.ua.length && (await participantWithoutSanta("ua"))) {
+            const pwsUa = await participantWithoutSanta("ua");
+            const pwsRu = await participantWithoutSanta("ru");
+            const pwsTr = await participantWithoutSanta("tr");
+
+            if (steam.ua.length && pwsUa) {
               await updateParticipants("ua", santaId);
-            } else if (
-              steam.ru.length &&
-              (await participantWithoutSanta("ru"))
-            ) {
+            } else if (steam.ru.length && pwsRu) {
               await updateParticipants("ru", santaId);
-            } else if (
-              steam.tr.length &&
-              (await participantWithoutSanta("tr"))
-            ) {
+            } else if (steam.tr.length && pwsTr) {
               await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "ua") {
-            if (steam.ru.length && (await participantWithoutSanta("ru"))) {
+            const pwsRu = await participantWithoutSanta("ru");
+            const pwsTr = await participantWithoutSanta("tr");
+
+            if (steam.ru.length && pwsRu) {
               await updateParticipants("ru", santaId);
-            } else if (
-              steam.tr.length &&
-              (await participantWithoutSanta("tr"))
-            ) {
+            } else if (steam.tr.length && pwsTr) {
               await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "ru") {
-            if (steam.tr.length && (await participantWithoutSanta("tr"))) {
+            const pws = await participantWithoutSanta("tr");
+
+            if (steam.tr.length && pws) {
               await updateParticipants("tr", santaId);
             }
           }
