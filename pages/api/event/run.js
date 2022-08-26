@@ -256,6 +256,85 @@ export default async function runEvent(req, res) {
             }
           }
         });
+
+        const noSteamParticipantsNumber = noSteam.length;
+
+        if (noSteamParticipantsNumber) {
+          if (noSteamParticipantsNumber > 1) {
+            const noSteamParticipantsIndexes = [
+              ...Array(noSteamParticipantsNumber).keys(),
+            ];
+
+            noSteam.forEach(async (participant, index) => {
+              const santaId = participant.id;
+              const recipientIndex = noSteamParticipantsIndexes.find(
+                (participantIndex) =>
+                  participantIndex > index &&
+                  !noSteam[participantIndex].hasSanta
+              );
+
+              if (recipientIndex !== undefined) {
+                const recipient = noSteam[recipientIndex];
+                const { id: recipientId } = recipient;
+
+                await Participant.updateOne(
+                  { id: recipientId },
+                  {
+                    hasSanta: true,
+                  }
+                );
+
+                await Participant.updateOne(
+                  { id: santaId },
+                  {
+                    recipient: recipientId,
+                  }
+                );
+              } else if (noSteamParticipantsNumber === index + 1) {
+                const recipient = noSteam[0];
+
+                if (!recipient.hasSanta) {
+                  const { id: recipientId } = recipient;
+
+                  await Participant.updateOne(
+                    { id: recipientId },
+                    {
+                      hasSanta: true,
+                    }
+                  );
+
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: recipientId,
+                    }
+                  );
+                } else {
+                  await Participant.updateOne(
+                    { id: santaId },
+                    {
+                      recipient: null,
+                    }
+                  );
+                }
+              } else {
+                await Participant.updateOne(
+                  { id: santaId },
+                  {
+                    recipient: null,
+                  }
+                );
+              }
+            });
+          } else {
+            await Participant.updateOne(
+              { id: noSteam[0].id },
+              {
+                recipient: null,
+              }
+            );
+          }
+        }
       }
 
       res.json({
