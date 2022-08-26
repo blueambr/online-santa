@@ -2,6 +2,7 @@ import { model, models } from "mongoose";
 import Event from "models/Event";
 import participantSchemas from "schemas/Participant";
 import connectDB from "utils/connectDB";
+import findAsync from "utils/findAsync";
 
 /**
  * @param {import('next').NextApiRequest} req
@@ -22,19 +23,15 @@ export default async function runEvent(req, res) {
         models[collectionRef] ||
         model(collectionRef, participantSchemas[event.collectionSchema]);
 
+      await Participant.updateMany(
+        {},
+        {
+          hasSanta: false,
+          recipient: null,
+        }
+      );
+
       const participants = await Participant.find().exec();
-
-      participants.forEach(async (participant) => {
-        const { id } = participant;
-
-        await Participant.updateOne(
-          { id },
-          {
-            hasSanta: false,
-            recipient: null,
-          }
-        );
-      });
 
       if (event.collectionSchema === "gaming-platforms") {
         // Prices: eu > kz > cis > ua > ru > tr
@@ -49,19 +46,11 @@ export default async function runEvent(req, res) {
         };
         const noSteam = [];
 
-        const hasParticipantWithoutSanta = async (steamRegion) =>
-          await Participant.findOne({ steamRegion, hasSanta: false }).exec();
-
         const findParticipant = async (id) =>
           await Participant.findOne({ id }).exec();
 
-        const updateSanta = async (santaId, recipientId) =>
-          await Participant.updateOne(
-            { id: santaId },
-            {
-              recipient: recipientId,
-            }
-          );
+        const participantWithoutSanta = async (steamRegion) =>
+          await Participant.findOne({ steamRegion, hasSanta: false }).exec();
 
         const updateRecipient = async (recipientId) =>
           await Participant.updateOne(
@@ -71,64 +60,100 @@ export default async function runEvent(req, res) {
             }
           );
 
-        const updateParticipants = (recipientSteamRegion, santaId) => {
-          const recipient = steam[recipientSteamRegion].find(
-            (participant) => !participant.hasSanta
+        const updateSanta = async (santaId, recipientId) =>
+          await Participant.updateOne(
+            { id: santaId },
+            {
+              recipient: recipientId,
+            }
           );
+
+        const updateParticipants = async (recipientSteamRegion, santaId) => {
+          const recipient = await participantWithoutSanta(recipientSteamRegion);
           const { id: recipientId } = recipient;
 
-          updateRecipient(recipientId);
-          updateSanta(santaId, recipientId);
+          await updateRecipient(recipientId);
+          await updateSanta(santaId, recipientId);
         };
 
-        const updateParticipantCrossRegions = (sr, santaId) => {
+        const updateParticipantCrossRegions = async (sr, santaId) => {
           if (sr === "eu") {
-            if (steam.kz.length && hasParticipantWithoutSanta("kz")) {
-              updateParticipants("kz", santaId);
-            } else if (steam.cis.length && hasParticipantWithoutSanta("cis")) {
-              updateParticipants("cis", santaId);
-            } else if (steam.ua.length && hasParticipantWithoutSanta("ua")) {
-              updateParticipants("ua", santaId);
-            } else if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
-              updateParticipants("ru", santaId);
-            } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
-              updateParticipants("tr", santaId);
+            if (steam.kz.length && (await participantWithoutSanta("kz"))) {
+              await updateParticipants("kz", santaId);
+            } else if (
+              steam.cis.length &&
+              (await participantWithoutSanta("cis"))
+            ) {
+              await updateParticipants("cis", santaId);
+            } else if (
+              steam.ua.length &&
+              (await participantWithoutSanta("ua"))
+            ) {
+              await updateParticipants("ua", santaId);
+            } else if (
+              steam.ru.length &&
+              (await participantWithoutSanta("ru"))
+            ) {
+              await updateParticipants("ru", santaId);
+            } else if (
+              steam.tr.length &&
+              (await participantWithoutSanta("tr"))
+            ) {
+              await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "kz") {
-            if (steam.cis.length && hasParticipantWithoutSanta("cis")) {
-              updateParticipants("cis", santaId);
-            } else if (steam.ua.length && hasParticipantWithoutSanta("ua")) {
-              updateParticipants("ua", santaId);
-            } else if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
-              updateParticipants("ru", santaId);
-            } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
-              updateParticipants("tr", santaId);
+            if (steam.cis.length && (await participantWithoutSanta("cis"))) {
+              await updateParticipants("cis", santaId);
+            } else if (
+              steam.ua.length &&
+              (await participantWithoutSanta("ua"))
+            ) {
+              await updateParticipants("ua", santaId);
+            } else if (
+              steam.ru.length &&
+              (await participantWithoutSanta("ru"))
+            ) {
+              await updateParticipants("ru", santaId);
+            } else if (
+              steam.tr.length &&
+              (await participantWithoutSanta("tr"))
+            ) {
+              await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "cis") {
-            if (steam.ua.length && hasParticipantWithoutSanta("ua")) {
-              updateParticipants("ua", santaId);
-            } else if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
-              updateParticipants("ru", santaId);
-            } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
-              updateParticipants("tr", santaId);
+            if (steam.ua.length && (await participantWithoutSanta("ua"))) {
+              await updateParticipants("ua", santaId);
+            } else if (
+              steam.ru.length &&
+              (await participantWithoutSanta("ru"))
+            ) {
+              await updateParticipants("ru", santaId);
+            } else if (
+              steam.tr.length &&
+              (await participantWithoutSanta("tr"))
+            ) {
+              await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "ua") {
-            if (steam.ru.length && hasParticipantWithoutSanta("ru")) {
-              updateParticipants("ru", santaId);
-            } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
-              updateParticipants("tr", santaId);
+            if (steam.ru.length && (await participantWithoutSanta("ru"))) {
+              await updateParticipants("ru", santaId);
+            } else if (
+              steam.tr.length &&
+              (await participantWithoutSanta("tr"))
+            ) {
+              await updateParticipants("tr", santaId);
             }
           }
 
           if (sr === "ru") {
-            if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
-              updateParticipants("tr", santaId);
+            if (steam.tr.length && (await participantWithoutSanta("tr"))) {
+              await updateParticipants("tr", santaId);
             }
           }
         };
@@ -150,28 +175,32 @@ export default async function runEvent(req, res) {
             if (steam[sr].length === 1) {
               const santaId = steam[sr][0].id;
 
-              updateParticipantCrossRegions(sr, santaId);
+              await updateParticipantCrossRegions(sr, santaId);
             } else if (steam[sr].length === 2) {
-              const santa = steam[sr][1].hasSanta ? steam[sr][1] : steam[sr][0];
-              const { id: santaId } = santa;
-              const recipient = !steam[sr][1].hasSanta
+              const santa = (await findParticipant(steam[sr][1].id)).hasSanta
                 ? steam[sr][1]
                 : steam[sr][0];
+              const { id: santaId } = santa;
+              const recipient =
+                santa.id === steam[sr][0].id ? steam[sr][1] : steam[sr][0];
               const { id: recipientId } = recipient;
 
               await updateRecipient(recipientId);
               await updateSanta(santaId, recipientId);
-              updateParticipantCrossRegions(sr, recipientId);
+              await updateParticipantCrossRegions(sr, recipientId);
             } else {
               const participantsNumber = steam[sr].length;
               const participantsIndexes = [...Array(participantsNumber).keys()];
 
               steam[sr].forEach(async (participant, index) => {
                 const santaId = participant.id;
-                const recipientIndex = participantsIndexes.find(
-                  (participantIndex) =>
+                const recipientIndex = await findAsync(
+                  participantsIndexes,
+                  async (participantIndex) =>
                     participantIndex > index &&
-                    !steam[sr][participantIndex].hasSanta
+                    !(
+                      await findParticipant(steam[sr][participantIndex].id)
+                    ).hasSanta
                 );
 
                 if (recipientIndex !== undefined) {
@@ -209,10 +238,13 @@ export default async function runEvent(req, res) {
 
             noSteam.forEach(async (participant, index) => {
               const santaId = participant.id;
-              const recipientIndex = noSteamParticipantsIndexes.find(
-                (participantIndex) =>
+              const recipientIndex = await findAsync(
+                noSteamParticipantsIndexes,
+                async (participantIndex) =>
                   participantIndex > index &&
-                  !noSteam[participantIndex].hasSanta
+                  !(
+                    await findParticipant(noSteam[participantIndex].id)
+                  ).hasSanta
               );
 
               if (recipientIndex !== undefined) {
