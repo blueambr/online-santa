@@ -8,9 +8,13 @@ const gamingPlatformsParticipantSchema = new Schema({
   },
   hasSanta: {
     type: Boolean,
+    required: true,
+    default: false,
   },
   recipient: {
     type: String,
+    required: true,
+    default: null,
   },
   telegram: {
     type: String,

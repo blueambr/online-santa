@@ -8,7 +8,7 @@
   "panel": {
     "actions": [
       {
-        "id": "adminPanelItem1",
+        "id": "adminPanelEventAlgorithm",
         "title": "Введите Ссылку на Коллекцию для запуска алгоритма События",
         "name": "eventAlgo",
         "placeholder": "Ссылка на Коллекцию",

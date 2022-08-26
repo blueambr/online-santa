@@ -24,6 +24,18 @@ export default async function runEvent(req, res) {
 
       const participants = await Participant.find().exec();
 
+      participants.forEach(async (participant) => {
+        const { id } = participant;
+
+        await Participant.updateOne(
+          { id },
+          {
+            hasSanta: false,
+            recipient: null,
+          }
+        );
+      });
+
       if (event.collectionSchema === "gaming-platforms") {
         // Prices: eu > kz > cis > ua > ru > tr
         const steamRegions = ["eu", "kz", "cis", "ua", "ru", "tr"];
@@ -37,15 +49,21 @@ export default async function runEvent(req, res) {
         };
         const noSteam = [];
 
-        const hasParticipantWithoutSanta = (steamRegion) =>
-          steam[steamRegion].find((participant) => !participant.hasSanta);
+        const hasParticipantWithoutSanta = async (steamRegion) =>
+          await Participant.findOne({ steamRegion, hasSanta: false }).exec();
 
-        const updateParticipants = async (recipientSteamRegion, santaId) => {
-          const recipient = steam[recipientSteamRegion].find(
-            (participant) => !participant.hasSanta
+        const findParticipant = async (id) =>
+          await Participant.findOne({ id }).exec();
+
+        const updateSanta = async (santaId, recipientId) =>
+          await Participant.updateOne(
+            { id: santaId },
+            {
+              recipient: recipientId,
+            }
           );
-          const { id: recipientId } = recipient;
 
+        const updateRecipient = async (recipientId) =>
           await Participant.updateOne(
             { id: recipientId },
             {
@@ -53,15 +71,17 @@ export default async function runEvent(req, res) {
             }
           );
 
-          await Participant.updateOne(
-            { id: santaId },
-            {
-              recipient: recipientId,
-            }
+        const updateParticipants = (recipientSteamRegion, santaId) => {
+          const recipient = steam[recipientSteamRegion].find(
+            (participant) => !participant.hasSanta
           );
+          const { id: recipientId } = recipient;
+
+          updateRecipient(recipientId);
+          updateSanta(santaId, recipientId);
         };
 
-        const updateParticipantCrossRegions = async (santaId) => {
+        const updateParticipantCrossRegions = (sr, santaId) => {
           if (sr === "eu") {
             if (steam.kz.length && hasParticipantWithoutSanta("kz")) {
               updateParticipants("kz", santaId);
@@ -73,13 +93,6 @@ export default async function runEvent(req, res) {
               updateParticipants("ru", santaId);
             } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
               updateParticipants("tr", santaId);
-            } else {
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: null,
-                }
-              );
             }
           }
 
@@ -92,13 +105,6 @@ export default async function runEvent(req, res) {
               updateParticipants("ru", santaId);
             } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
               updateParticipants("tr", santaId);
-            } else {
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: null,
-                }
-              );
             }
           }
 
@@ -109,13 +115,6 @@ export default async function runEvent(req, res) {
               updateParticipants("ru", santaId);
             } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
               updateParticipants("tr", santaId);
-            } else {
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: null,
-                }
-              );
             }
           }
 
@@ -124,40 +123,17 @@ export default async function runEvent(req, res) {
               updateParticipants("ru", santaId);
             } else if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
               updateParticipants("tr", santaId);
-            } else {
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: null,
-                }
-              );
             }
           }
 
           if (sr === "ru") {
             if (steam.tr.length && hasParticipantWithoutSanta("tr")) {
               updateParticipants("tr", santaId);
-            } else {
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: null,
-                }
-              );
             }
-          }
-
-          if (sr === "tr") {
-            await Participant.updateOne(
-              { id: santaId },
-              {
-                recipient: null,
-              }
-            );
           }
         };
 
-        participants.forEach(async (participant) => {
+        participants.forEach((participant) => {
           const psr = participant.steamRegion;
 
           if (psr) {
@@ -174,7 +150,7 @@ export default async function runEvent(req, res) {
             if (steam[sr].length === 1) {
               const santaId = steam[sr][0].id;
 
-              updateParticipantCrossRegions(santaId);
+              updateParticipantCrossRegions(sr, santaId);
             } else if (steam[sr].length === 2) {
               const santa = steam[sr][1].hasSanta ? steam[sr][1] : steam[sr][0];
               const { id: santaId } = santa;
@@ -183,21 +159,9 @@ export default async function runEvent(req, res) {
                 : steam[sr][0];
               const { id: recipientId } = recipient;
 
-              await Participant.updateOne(
-                { id: recipientId },
-                {
-                  hasSanta: true,
-                }
-              );
-
-              await Participant.updateOne(
-                { id: santaId },
-                {
-                  recipient: recipientId,
-                }
-              );
-
-              updateParticipantCrossRegions(recipientId);
+              await updateRecipient(recipientId);
+              await updateSanta(santaId, recipientId);
+              updateParticipantCrossRegions(sr, recipientId);
             } else {
               const participantsNumber = steam[sr].length;
               const participantsIndexes = [...Array(participantsNumber).keys()];
@@ -214,43 +178,21 @@ export default async function runEvent(req, res) {
                   const recipient = steam[sr][recipientIndex];
                   const { id: recipientId } = recipient;
 
-                  await Participant.updateOne(
-                    { id: recipientId },
-                    {
-                      hasSanta: true,
-                    }
-                  );
-
-                  await Participant.updateOne(
-                    { id: santaId },
-                    {
-                      recipient: recipientId,
-                    }
-                  );
+                  await updateRecipient(recipientId);
+                  await updateSanta(santaId, recipientId);
                 } else if (participantsNumber === index + 1) {
-                  const recipient = steam[sr][0];
+                  const recipientId = steam[sr][0].id;
 
-                  if (!recipient.hasSanta) {
-                    const { id: recipientId } = recipient;
-
-                    await Participant.updateOne(
-                      { id: recipientId },
-                      {
-                        hasSanta: true,
-                      }
-                    );
-
-                    await Participant.updateOne(
-                      { id: santaId },
-                      {
-                        recipient: recipientId,
-                      }
-                    );
-                  } else {
-                    updateParticipantCrossRegions(santaId);
-                  }
+                  findParticipant(recipientId).then(async (recipient) => {
+                    if (!recipient.hasSanta) {
+                      await updateRecipient(recipientId);
+                      await updateSanta(santaId, recipientId);
+                    } else {
+                      updateParticipantCrossRegions(sr, santaId);
+                    }
+                  });
                 } else {
-                  updateParticipantCrossRegions(santaId);
+                  updateParticipantCrossRegions(sr, santaId);
                 }
               });
             }
@@ -277,62 +219,21 @@ export default async function runEvent(req, res) {
                 const recipient = noSteam[recipientIndex];
                 const { id: recipientId } = recipient;
 
-                await Participant.updateOne(
-                  { id: recipientId },
-                  {
-                    hasSanta: true,
-                  }
-                );
-
-                await Participant.updateOne(
-                  { id: santaId },
-                  {
-                    recipient: recipientId,
-                  }
-                );
+                await updateRecipient(recipientId);
+                await updateSanta(santaId, recipientId);
               } else if (noSteamParticipantsNumber === index + 1) {
-                const recipient = noSteam[0];
+                const recipientId = noSteam[0].id;
 
-                if (!recipient.hasSanta) {
-                  const { id: recipientId } = recipient;
+                findParticipant(recipientId).then(async (recipient) => {
+                  if (!recipient.hasSanta) {
+                    const { id: recipientId } = recipient;
 
-                  await Participant.updateOne(
-                    { id: recipientId },
-                    {
-                      hasSanta: true,
-                    }
-                  );
-
-                  await Participant.updateOne(
-                    { id: santaId },
-                    {
-                      recipient: recipientId,
-                    }
-                  );
-                } else {
-                  await Participant.updateOne(
-                    { id: santaId },
-                    {
-                      recipient: null,
-                    }
-                  );
-                }
-              } else {
-                await Participant.updateOne(
-                  { id: santaId },
-                  {
-                    recipient: null,
+                    await updateRecipient(recipientId);
+                    await updateSanta(santaId, recipientId);
                   }
-                );
+                });
               }
             });
-          } else {
-            await Participant.updateOne(
-              { id: noSteam[0].id },
-              {
-                recipient: null,
-              }
-            );
           }
         }
       }

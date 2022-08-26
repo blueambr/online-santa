@@ -13,7 +13,7 @@ const AdminPanel = ({ data }) => {
 
   return (
     <section className="container py-12 lg:py-16">
-      <ul role="list">
+      <ul className="flex flex-col gap-8" role="list">
         {actions.map((item) => (
           <li key={item.id}>
             <Formik
@@ -36,7 +36,7 @@ const AdminPanel = ({ data }) => {
                   <h2 className="font-sans text-lg font-normal lg:text-xl">
                     {item.title}
                   </h2>
-                  <div className="mt-4 flex justify-center">
+                  <div className="mt-4 flex justify-center gap-4">
                     <div className="w-full md:w-1/2">
                       <Field
                         className={clsx(
@@ -56,7 +56,7 @@ const AdminPanel = ({ data }) => {
                       />
                     </div>
                     <button
-                      className="btn btn-primary ml-4"
+                      className="btn btn-primary"
                       type="submit"
                       disabled={isSubmitting}
                     >
