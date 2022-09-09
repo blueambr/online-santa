@@ -1,10 +1,10 @@
-const relay = (query, method, body, onSuccess, onError) => {
-  fetch(query, {
+const relay = async (query, method, body, onSuccess, onError) => {
+  await fetch(query, {
     method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   })
     .then((res) => res.json())
     .then((result) => {

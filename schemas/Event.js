@@ -14,6 +14,12 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  excerpt: {
+    type: String,
+  },
+  excerptRu: {
+    type: String,
+  },
 });
 
 export default eventSchema;

@@ -24,7 +24,7 @@ const AdminPanel = ({ data }) => {
               onSubmit={(values, { setSubmitting }) => {
                 const { eventAlgo } = values;
 
-                relay("/api/event/run", "POST", {
+                relay("/api/events/run", "POST", {
                   collectionRef: eventAlgo,
                 });
 

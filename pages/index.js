@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
+import relay from "utils/relay";
 import data from "lib/en/pages";
 import dataRu from "lib/ru/pages";
 import Layout from "@/layout";
+import Events from "@/sections/Events";
 
-const Home = () => {
+const Home = ({ events }) => {
   const router = useRouter();
   const { locale } = router;
 
@@ -17,20 +18,30 @@ const Home = () => {
     }
   };
 
-  const { page, title } = getData();
+  const { page, eventLinkTitle } = getData();
 
   return (
     <>
       <Layout data={page}>
-        <h1 className="font-serif text-6xl text-neutral-content">{title}</h1>
-        <Link href="/event/onlinesanta-2023">
-          <a className="font-serif text-6xl text-neutral-content">
-            Online Santa 2023 Link
-          </a>
-        </Link>
+        <Events data={{ events, eventLinkTitle, locale }} />
       </Layout>
     </>
   );
 };
 
 export default Home;
+
+export const getServerSideProps = async () => {
+  let events;
+
+  await relay(
+    "http://onlinesanta.loc/api/events/get",
+    "GET",
+    null,
+    (res) => (events = res.events)
+  );
+
+  return {
+    props: { events },
+  };
+};
