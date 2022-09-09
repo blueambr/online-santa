@@ -34,8 +34,10 @@ export default Home;
 export const getServerSideProps = async () => {
   let events;
 
+  console.log(process.env.DOMAIN);
+
   await relay(
-    "http://onlinesanta.loc/api/events/get",
+    `${process.env.DOMAIN}/api/events/get`,
     "GET",
     null,
     (res) => (events = res.events)
