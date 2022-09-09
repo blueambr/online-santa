@@ -6,7 +6,7 @@ const Event = ({ data }) => {
   return (
     <Link href={`/event/${event.collectionRef}`}>
       <a
-        className="card mx-auto w-full bg-primary text-primary-content shadow-xl transition hover:bg-neutral hover:text-neutral-content md:w-1/2 lg:w-1/3"
+        className="card w-full bg-primary text-primary-content shadow-xl transition hover:bg-neutral hover:text-neutral-content"
         rel="noopener noreferrer"
         title={`${eventLinkTitle} ${event.name}`}
       >
@@ -24,9 +24,9 @@ const Events = ({ data }) => {
 
   return (
     <section className="container py-12 lg:py-16">
-      <ul role="list">
+      <ul className="flex flex-wrap justify-center gap-8" role="list">
         {events.map((event) => (
-          <li key={event._id}>
+          <li className="w-full md:w-[calc(50%-1rem)]" key={event._id}>
             <Event data={{ event, eventLinkTitle, locale }} />
           </li>
         ))}
