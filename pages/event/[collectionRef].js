@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import GlobalContext from "context";
-import connectDB from "utils/connectDB";
 import Event from "models/Event";
+import connectDB from "utils/connectDB";
+import relay from "utils/relay";
 import data from "lib/en/pages/event";
 import dataRu from "lib/ru/pages/event";
 import Layout from "@/layout";
@@ -17,7 +18,7 @@ const EventPage = ({ event }) => {
   const { user } = globalContext;
   const router = useRouter();
   const { locale } = router;
-  const { collectionRef, status } = event;
+  const { collectionRef, collectionSchema, status } = event;
 
   const getData = () => {
     switch (locale) {
@@ -51,9 +52,49 @@ const EventPage = ({ event }) => {
   };
 
   const [isParticipant, setIsParticipant] = useState(doesParticipate());
+  const [userParticipant, setUserParticipant] = useState(null);
+  const [recipientParticipant, setRecipientParticipant] = useState(null);
 
   useEffect(() => {
-    setIsParticipant(doesParticipate());
+    const doesParticipateResult = doesParticipate();
+
+    setIsParticipant(doesParticipateResult);
+
+    if (doesParticipateResult) {
+      let up;
+
+      relay(
+        "/api/participant/get",
+        "POST",
+        {
+          collectionRef,
+          collectionSchema,
+          id: user.id,
+        },
+        (res) => {
+          up = res.participant;
+
+          setUserParticipant(up);
+        },
+        (err) => alert(err)
+      );
+
+      if (status === "ongoing") {
+        relay(
+          "/api/participant/get",
+          "POST",
+          {
+            collectionRef,
+            collectionSchema,
+            id: up.recipient,
+          },
+          (res) => {
+            setRecipientParticipant(res.participant);
+          },
+          (err) => alert(err)
+        );
+      }
+    }
   }, [user]);
 
   return (
@@ -67,7 +108,9 @@ const EventPage = ({ event }) => {
             <TelegramLoginWidget />
           </div>
         ) : isParticipant ? (
-          <InfoEvent data={{ info, status }} />
+          <InfoEvent
+            data={{ info, status, userParticipant, recipientParticipant }}
+          />
         ) : (
           <FormEvent data={form} event={event} />
         )}

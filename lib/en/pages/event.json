@@ -148,7 +148,20 @@
           "icon": "doorClosed",
           "text": "This Event has finished 😢 <br /> You can sign up for another one from the <a href='/' rel='noopener noreferrer'>homepage</a> (if there are any planned)."
         }
-      }
+      },
+      "participant": {
+        "telegram": "Your Telegram",
+        "comments": "Comments, wishes, clarifications",
+        "noComments": "No comments",
+        "platforms": "Gaming Platforms",
+        "platform": "Gaming Platform",
+        "region": "Region",
+        "profile": "Profile / Username"
+      },
+      "user": {
+        "title": "The data you registered with. Your Santa will receive it."
+      },
+      "recipient": {}
     }
   }
 }
