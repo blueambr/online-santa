@@ -26,12 +26,18 @@ const InfoRecipientParticipant = ({ data }) => {
                   className="first:mt-2"
                   key={platform.platform + platform.profile}
                 >
-                  <h4 className="inline">{participant.platform}: </h4>
-                  <span className="text-primary">{platform.platform}</span>
-                  <h4 className="inline"> | {participant.region}: </h4>
-                  <span className="text-primary">{platform.region}</span>
-                  <h4 className="inline"> | {participant.profile}: </h4>
-                  <span className="text-primary">{platform.profile}</span>
+                  <div>
+                    <h4 className="inline">{participant.platform}: </h4>
+                    <span className="text-primary">{platform.platform}</span>
+                  </div>
+                  <div>
+                    <h4 className="inline">{participant.region}: </h4>
+                    <span className="text-primary">{platform.region}</span>
+                  </div>
+                  <div>
+                    <h4 className="inline">{participant.profile}: </h4>
+                    <span className="text-primary">{platform.profile}</span>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -73,12 +79,18 @@ const InfoUserParticipant = ({ data }) => {
                 className="first:mt-2"
                 key={platform.platform + platform.profile}
               >
-                <h4 className="inline">{participant.platform}: </h4>
-                <span className="text-primary">{platform.platform}</span>
-                <h4 className="inline"> | {participant.region}: </h4>
-                <span className="text-primary">{platform.region}</span>
-                <h4 className="inline"> | {participant.profile}: </h4>
-                <span className="text-primary">{platform.profile}</span>
+                <div>
+                  <h4 className="inline">{participant.platform}: </h4>
+                  <span className="text-primary">{platform.platform}</span>
+                </div>
+                <div>
+                  <h4 className="inline">{participant.region}: </h4>
+                  <span className="text-primary">{platform.region}</span>
+                </div>
+                <div>
+                  <h4 className="inline">{participant.profile}: </h4>
+                  <span className="text-primary">{platform.profile}</span>
+                </div>
               </li>
             ))}
           </ul>
