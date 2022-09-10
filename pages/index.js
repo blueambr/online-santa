@@ -31,7 +31,7 @@ const Home = ({ events }) => {
 
 export default Home;
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   let events;
 
   await relay(
