@@ -20,9 +20,12 @@ const InfoRecipientParticipant = ({ data }) => {
           </div>
           <div>
             <h3 className="text-2xl">{participant.platforms}:</h3>
-            <ul className="text-lg" role="list">
+            <ul className="flex flex-col gap-4 text-lg" role="list">
               {info.platforms.map((platform) => (
-                <li key={platform.platform + platform.profile}>
+                <li
+                  className="first:mt-2"
+                  key={platform.platform + platform.profile}
+                >
                   <h4 className="inline">{participant.platform}: </h4>
                   <span className="text-primary">{platform.platform}</span>
                   <h4 className="inline"> | {participant.region}: </h4>
@@ -48,10 +51,10 @@ const InfoUserParticipant = ({ data }) => {
   const { userParticipant: info, participant, user } = data;
 
   return (
-    <div className="collapse collapse-arrow rounded-box mt-8 border border-base-content bg-base-200 text-base-content">
+    <div className="collapse-arrow collapse rounded-box mt-8 border border-base-content bg-base-200 text-base-content">
       <input type="checkbox" />
       <div className="collapse-title text-xl">{user.title}</div>
-      <div className="collapse-content flex flex-col gap-2">
+      <div className="collapse-content flex flex-col gap-6">
         <div>
           <h3 className="text-lg">{participant.telegram}:</h3>
           <p className="text-primary">{info.telegram}</p>
@@ -64,9 +67,12 @@ const InfoUserParticipant = ({ data }) => {
         </div>
         <div>
           <h3 className="text-lg">{participant.platforms}:</h3>
-          <ul role="list">
+          <ul className="flex flex-col gap-4" role="list">
             {info.platforms.map((platform) => (
-              <li key={platform.platform + platform.profile}>
+              <li
+                className="first:mt-2"
+                key={platform.platform + platform.profile}
+              >
                 <h4 className="inline">{participant.platform}: </h4>
                 <span className="text-primary">{platform.platform}</span>
                 <h4 className="inline"> | {participant.region}: </h4>
