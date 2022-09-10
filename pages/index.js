@@ -39,9 +39,8 @@ export const getServerSideProps = async () => {
     "GET",
     null,
     (res) => (events = res.events),
-    (err) => {
+    () => {
       events = [];
-      alert(err);
     }
   );
 
