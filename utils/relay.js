@@ -30,7 +30,7 @@ const relay = async (query, method, body, onSuccess, onError) => {
       console.error("Error:", err);
 
       if (onError) {
-        onError();
+        onError(err);
       }
     });
 };

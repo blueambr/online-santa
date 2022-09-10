@@ -353,7 +353,7 @@ const FormEvent = ({ data, event }) => {
               (res) => {
                 setUser({ ...user, participant: res.body.userParticipant });
               },
-              () => alert("ALREADY SUBMITTED OR SERVER ERROR!!")
+              (err) => alert(err)
             );
 
             setSubmitting(false);

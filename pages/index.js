@@ -38,7 +38,11 @@ export const getServerSideProps = async () => {
     `${process.env.DOMAIN}/api/events/get`,
     "GET",
     null,
-    (res) => (events = res.events)
+    (res) => (events = res.events),
+    (err) => {
+      events = [];
+      alert(err);
+    }
   );
 
   return {

@@ -26,7 +26,10 @@ const App = ({ Component, pageProps }) => {
         (res) => {
           setUser(res.user);
         },
-        () => setUser(false)
+        (err) => {
+          setUser(false);
+          alert(err);
+        }
       );
     } else {
       setUser(false);
