@@ -1,4 +1,5 @@
 import { model, models } from "mongoose";
+import User from "models/User";
 import participantSchemas from "schemas/Participant";
 import connectDB from "utils/connectDB";
 
@@ -42,8 +43,34 @@ export default async function addParticipant(req, res) {
         platforms,
       });
 
+      const user = await User.findOne({ id }).exec();
+      let userParticipant;
+
+      if (user.participant) {
+        userParticipant = user.participant;
+        userParticipant = JSON.parse(userParticipant);
+        userParticipant.push(collectionRef);
+        userParticipant = JSON.stringify(userParticipant);
+
+        await User.updateOne(
+          { id },
+          {
+            participant: userParticipant,
+          }
+        );
+      } else {
+        userParticipant = JSON.stringify([collectionRef]);
+
+        await User.updateOne(
+          { id },
+          {
+            participant: userParticipant,
+          }
+        );
+      }
+
       res.json({
-        participant,
+        body: { participant, userParticipant },
         serverMessage: "The requested Participant has been created.",
         isSuccess: true,
       });

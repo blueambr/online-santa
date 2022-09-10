@@ -4,12 +4,6 @@
     "title": "Open the menu",
     "nav": [
       {
-        "id": "navLink1",
-        "href": "/profile",
-        "icon": "user",
-        "text": "Profile"
-      },
-      {
         "id": "navLink2",
         "href": "/",
         "icon": "house",

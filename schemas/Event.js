@@ -20,6 +20,11 @@ const eventSchema = new Schema({
   excerptRu: {
     type: String,
   },
+  status: {
+    type: String,
+    required: true,
+    default: "open",
+  },
 });
 
 export default eventSchema;

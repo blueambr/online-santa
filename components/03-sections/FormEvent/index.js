@@ -7,11 +7,10 @@ import { array, object, string } from "yup";
 import GlobalContext from "context";
 import getIcon from "utils/getIcon";
 import relay from "utils/relay";
-import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 
 const FormEvent = ({ data, event }) => {
   const globalContext = useContext(GlobalContext);
-  const { user } = globalContext;
+  const { user, setUser } = globalContext;
   const [dynamicEntities, setDynamicEntities] = useState([]);
   const [canAddEntities, setCanAddEntities] = useState(true);
   const [changedPlatform, setChangedPlatform] = useState([false, null]);
@@ -319,84 +318,66 @@ const FormEvent = ({ data, event }) => {
   return (
     <>
       <section className="container py-12 lg:py-16">
-        {user === null ? (
-          <div className="text-center">
-            <h1 className="font-serif text-6xl text-neutral-content">
-              Loading...
-            </h1>
-          </div>
-        ) : !user ? (
-          <div className="text-center">
-            <TelegramLoginWidget />
-          </div>
-        ) : (
-          <Formik
-            initialValues={{
-              platforms: [
-                {
-                  platform: "default",
-                  region: "",
-                  profile: "",
-                },
-              ],
-              telegram: user.username && `https://t.me/${user.username}`,
-              comments: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              const { telegram, comments, platforms } = values;
-              const steam =
-                platforms.find((platform) => platform.platform === "steam") ||
-                null;
-              const steamRegion = steam ? steam.region : null;
+        <Formik
+          initialValues={{
+            platforms: [
+              {
+                platform: "default",
+                region: "",
+                profile: "",
+              },
+            ],
+            telegram: user.username && `https://t.me/${user.username}`,
+            comments: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            const { telegram, comments, platforms } = values;
+            const steam =
+              platforms.find((platform) => platform.platform === "steam") ||
+              null;
+            const steamRegion = steam ? steam.region : null;
 
-              relay(
-                "/api/participant/add",
-                "POST",
-                {
-                  collectionRef,
-                  collectionSchema,
-                  id: user.id,
-                  telegram,
-                  comments,
-                  steamRegion,
-                  platforms,
-                },
-                () => {
-                  alert("SUCCESS!!");
-                },
-                () => alert("ALREADY SUBMITTED OR SERVER ERROR!!")
-              );
+            relay(
+              "/api/participant/add",
+              "POST",
+              {
+                collectionRef,
+                collectionSchema,
+                id: user.id,
+                telegram,
+                comments,
+                steamRegion,
+                platforms,
+              },
+              (res) => {
+                setUser({ ...user, participant: res.body.userParticipant });
+              },
+              () => alert("ALREADY SUBMITTED OR SERVER ERROR!!")
+            );
 
-              setSubmitting(false);
-            }}
-          >
-            {({ values, touched, handleChange, errors, isSubmitting }) => (
-              <Form className="text-center">
-                <ul className="grid gap-8" role="list">
-                  {data.fields.map((field) => (
-                    <li key={field.id}>
-                      {renderFields(
-                        field,
-                        values,
-                        touched,
-                        handleChange,
-                        errors
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className="btn btn-primary mt-8"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  {data.submit}
-                </button>
-              </Form>
-            )}
-          </Formik>
-        )}
+            setSubmitting(false);
+          }}
+        >
+          {({ values, touched, handleChange, errors, isSubmitting }) => (
+            <Form className="text-center">
+              <ul className="grid gap-8" role="list">
+                {data.fields.map((field) => (
+                  <li key={field.id}>
+                    {renderFields(field, values, touched, handleChange, errors)}
+                  </li>
+                ))}
+              </ul>
+              <button
+                className="btn btn-primary mt-8"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {data.submit}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </section>
     </>
   );

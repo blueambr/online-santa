@@ -3,7 +3,7 @@ import { add } from "date-fns";
 export const setCookie = (
   name,
   value,
-  expires = add(new Date(), { months: 1 })
+  expires = add(new Date(), { months: 6 })
 ) => {
   document.cookie = `${name}=${value};expires=${expires};path=/`;
 };
