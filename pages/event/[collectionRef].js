@@ -6,10 +6,11 @@ import Event from "models/Event";
 import data from "lib/en/pages/event";
 import dataRu from "lib/ru/pages/event";
 import Layout from "@/layout";
+import Preloader from "@/elements/Preloader";
+import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 import Hero from "@/sections/Hero";
 import FormEvent from "@/sections/FormEvent";
 import InfoEvent from "@/sections/InfoEvent";
-import TelegramLoginWidget from "@/modules/TelegramLoginWidget";
 
 const EventPage = ({ event }) => {
   const globalContext = useContext(GlobalContext);
@@ -60,11 +61,7 @@ const EventPage = ({ event }) => {
       <Layout data={page}>
         <Hero data={hero} />
         {user === null || isParticipant === null ? (
-          <div className="text-center">
-            <h1 className="font-serif text-6xl text-neutral-content">
-              Loading...
-            </h1>
-          </div>
+          <Preloader />
         ) : !user ? (
           <div className="text-center">
             <TelegramLoginWidget />

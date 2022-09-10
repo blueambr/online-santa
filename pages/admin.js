@@ -4,6 +4,7 @@ import GlobalContext from "context";
 import data from "lib/en/pages/admin";
 import dataRu from "lib/ru/pages/admin";
 import Layout from "@/layout";
+import Preloader from "@/elements/Preloader";
 import Hero from "@/sections/Hero";
 import AdminPanel from "@/sections/AdminPanel";
 
@@ -29,18 +30,12 @@ const Admin = () => {
       <Layout data={page}>
         {user === null ? (
           <section className="container py-12 lg:py-16">
-            <div className="text-center">
-              <h1 className="font-serif text-6xl text-neutral-content">
-                Loading...
-              </h1>
-            </div>
+            <Preloader />
           </section>
         ) : !user || !user.isAdmin ? (
           <section className="container py-12 lg:py-16">
             <div className="text-center">
-              <h1 className="font-serif text-6xl text-neutral-content">
-                No Access
-              </h1>
+              <h1 className="font-serif text-6xl text-neutral-content">⛔</h1>
             </div>
           </section>
         ) : (
