@@ -42,7 +42,11 @@ const EventPage = ({ event }) => {
       return false;
     }
 
-    return null;
+    if (user === null) {
+      return null;
+    }
+
+    return false;
   };
 
   const [isParticipant, setIsParticipant] = useState(doesParticipate());
