@@ -117,7 +117,7 @@ const InfoEvent = ({ data }) => {
   };
 
   return (
-    <section className="container py-12 lg:py-16">
+    <section className="container">
       <Alert data={dataAlert()} />
       {recipientParticipant !== null && (
         <InfoRecipientParticipant
