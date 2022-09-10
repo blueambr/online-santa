@@ -5,7 +5,7 @@ export const setCookie = (
   value,
   expires = add(new Date(), { months: 6 })
 ) => {
-  document.cookie = `${name}=${value};expires=${expires};path=/`;
+  document.cookie = `${name}=${value};expires=${expires};path=/;SameSite=Lax`;
 };
 
 const getCookie = (name) => {
