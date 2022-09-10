@@ -130,6 +130,25 @@
         }
       },
       "submit": "Register"
+    },
+    "info": {
+      "alert": {
+        "open": {
+          "theme": "info",
+          "icon": "doorOpen",
+          "text": "Thank you for signing up! <br /> The Event is still open for registration. Come back, when the Event officially starts. All the info you need to participate will be here then."
+        },
+        "ongoing": {
+          "theme": "success",
+          "icon": "circlePlay",
+          "text": "The Event has started 🎉 <br /> Use the info below to take part."
+        },
+        "closed": {
+          "theme": "error",
+          "icon": "doorClosed",
+          "text": "This Event has finished 😢 <br /> You can sign up for another one from the <a href='/' rel='noopener noreferrer'>homepage</a> (if there are any planned)."
+        }
+      }
     }
   }
 }

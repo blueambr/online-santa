@@ -1,5 +1,8 @@
 import {
   faBars,
+  faCirclePlay,
+  faDoorClosed,
+  faDoorOpen,
   faHouse,
   faLanguage,
   faPlus,
@@ -11,6 +14,12 @@ const getIcon = (name) => {
   switch (name) {
     case "bars":
       return faBars;
+    case "circlePlay":
+      return faCirclePlay;
+    case "doorClosed":
+      return faDoorClosed;
+    case "doorOpen":
+      return faDoorOpen;
     case "house":
       return faHouse;
     case "language":

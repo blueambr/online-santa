@@ -17,4 +17,14 @@
   }
 }
 @tailwind components;
+@layer components {
+  .raw-html a {
+    text-decoration: underline;
+  }
+
+  .raw-html a:hover,
+  .raw-html a:focus {
+    text-decoration: none;
+  }
+}
 @tailwind utilities;

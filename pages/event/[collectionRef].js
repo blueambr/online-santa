@@ -17,7 +17,7 @@ const EventPage = ({ event }) => {
   const { user } = globalContext;
   const router = useRouter();
   const { locale } = router;
-  const { collectionRef } = event;
+  const { collectionRef, status } = event;
 
   const getData = () => {
     switch (locale) {
@@ -28,7 +28,7 @@ const EventPage = ({ event }) => {
     }
   };
 
-  const { page, hero, form } = getData();
+  const { page, hero, form, info } = getData();
 
   const doesParticipate = () => {
     if (user) {
@@ -67,7 +67,7 @@ const EventPage = ({ event }) => {
             <TelegramLoginWidget />
           </div>
         ) : isParticipant ? (
-          <InfoEvent />
+          <InfoEvent data={{ info, status }} />
         ) : (
           <FormEvent data={form} event={event} />
         )}
