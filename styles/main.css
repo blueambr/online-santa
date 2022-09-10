@@ -26,5 +26,13 @@
   .raw-html a:focus {
     text-decoration: none;
   }
+
+  .raw-html-lg h2 {
+    @apply text-2xl;
+  }
+
+  .raw-html-lg p {
+    @apply mt-4 text-lg;
+  }
 }
 @tailwind utilities;

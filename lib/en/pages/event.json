@@ -161,7 +161,11 @@
       "user": {
         "title": "The data you registered with. Your Santa will receive it."
       },
-      "recipient": {}
+      "recipient": {
+        "title": "Your Recipient",
+        "telegram": "Their Telegram",
+        "noRecipient": "<h2>Hello! Unfortunately, we couldn't find you a pair 😔</h2><p>But don't be disappointed! You can choose anyone from our <em>secret</em> chat 🤫 and just gift something you like to them.</p><p>As for your Santa: don't worry, you have one, so the only thing you have to do is wait a little 😊</p>"
+      }
     }
   }
 }

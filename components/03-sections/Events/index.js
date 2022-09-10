@@ -6,7 +6,7 @@ const Event = ({ data }) => {
   return (
     <Link href={`/event/${event.collectionRef}`}>
       <a
-        className="card w-full bg-primary text-primary-content shadow-xl transition hover:bg-neutral hover:text-neutral-content"
+        className="card w-full border border-transparent bg-primary text-primary-content shadow-xl transition hover:border-base-content hover:bg-base-200 hover:text-base-content"
         rel="noopener noreferrer"
         title={`${eventLinkTitle} ${event.name}`}
       >

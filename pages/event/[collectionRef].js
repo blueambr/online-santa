@@ -56,45 +56,51 @@ const EventPage = ({ event }) => {
   const [recipientParticipant, setRecipientParticipant] = useState(null);
 
   useEffect(() => {
-    const doesParticipateResult = doesParticipate();
+    (async () => {
+      const doesParticipateResult = doesParticipate();
 
-    setIsParticipant(doesParticipateResult);
+      setIsParticipant(doesParticipateResult);
 
-    if (doesParticipateResult) {
-      let up;
+      if (doesParticipateResult) {
+        let up;
 
-      relay(
-        "/api/participant/get",
-        "POST",
-        {
-          collectionRef,
-          collectionSchema,
-          id: user.id,
-        },
-        (res) => {
-          up = res.participant;
-
-          setUserParticipant(up);
-        },
-        (err) => alert(err)
-      );
-
-      if (status === "ongoing") {
-        relay(
+        await relay(
           "/api/participant/get",
           "POST",
           {
             collectionRef,
             collectionSchema,
-            id: up.recipient,
+            id: user.id,
           },
           (res) => {
-            setRecipientParticipant(res.participant);
+            up = res.participant;
+
+            setUserParticipant(up);
           },
           (err) => alert(err)
         );
+
+        if (status === "ongoing") {
+          if (up.recipient) {
+            relay(
+              "/api/participant/get",
+              "POST",
+              {
+                collectionRef,
+                collectionSchema,
+                id: up.recipient,
+              },
+              (res) => {
+                setRecipientParticipant(res.participant);
+              },
+              (err) => alert(err)
+            );
+          } else {
+            setRecipientParticipant(false);
+          }
+        }
       }
-    }
+    })();
   }, [user]);
 
   return (
