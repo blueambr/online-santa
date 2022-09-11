@@ -25,6 +25,11 @@ const eventSchema = new Schema({
     required: true,
     default: "open",
   },
+  registrationClosed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 export default eventSchema;
