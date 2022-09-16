@@ -1,7 +1,13 @@
+import { useRouter } from "next/router";
 import Alert from "@/modules/Alert";
 
 const InfoRecipientParticipant = ({ data }) => {
-  const { recipientParticipant: info, participant, recipient } = data;
+  const {
+    recipientParticipant: info,
+    participant,
+    recipient,
+    steamRegions,
+  } = data;
 
   return (
     <div className="mt-8">
@@ -28,11 +34,18 @@ const InfoRecipientParticipant = ({ data }) => {
                 >
                   <div>
                     <h4 className="inline">{participant.platform}: </h4>
-                    <span className="text-primary">{platform.platform}</span>
+                    <span className="text-primary">
+                      {platform.platform[0].toUpperCase() +
+                        platform.platform.substring(1)}
+                    </span>
                   </div>
                   <div>
                     <h4 className="inline">{participant.region}: </h4>
-                    <span className="text-primary">{platform.region}</span>
+                    <span className="text-primary">
+                      {platform.platform === "steam"
+                        ? steamRegions[platform.region]
+                        : platform.region}
+                    </span>
                   </div>
                   <div>
                     <h4 className="inline">{participant.profile}: </h4>
@@ -54,7 +67,7 @@ const InfoRecipientParticipant = ({ data }) => {
 };
 
 const InfoUserParticipant = ({ data }) => {
-  const { userParticipant: info, participant, user } = data;
+  const { userParticipant: info, participant, user, steamRegions } = data;
 
   return (
     <div className="collapse-arrow collapse rounded-box mt-8 border border-base-content bg-base-200 text-base-content">
@@ -81,11 +94,18 @@ const InfoUserParticipant = ({ data }) => {
               >
                 <div>
                   <h4 className="inline">{participant.platform}: </h4>
-                  <span className="text-primary">{platform.platform}</span>
+                  <span className="text-primary">
+                    {platform.platform[0].toUpperCase() +
+                      platform.platform.substring(1)}
+                  </span>
                 </div>
                 <div>
                   <h4 className="inline">{participant.region}: </h4>
-                  <span className="text-primary">{platform.region}</span>
+                  <span className="text-primary">
+                    {platform.platform === "steam"
+                      ? steamRegions[platform.region]
+                      : platform.region}
+                  </span>
                 </div>
                 <div>
                   <h4 className="inline">{participant.profile}: </h4>
@@ -101,6 +121,8 @@ const InfoUserParticipant = ({ data }) => {
 };
 
 const InfoEvent = ({ data }) => {
+  const router = useRouter();
+  const { locale } = router;
   const { info, status, userParticipant, recipientParticipant } = data;
   const { alert, participant, user, recipient } = info;
   const { open, ongoing, closed } = alert;
@@ -116,16 +138,51 @@ const InfoEvent = ({ data }) => {
     }
   };
 
+  const steamRegions = () => {
+    switch (locale) {
+      case "en":
+        return {
+          cis: "CIS",
+          eu: "EU",
+          kz: "Kazakhstan",
+          ru: "Russia",
+          tr: "Turkey",
+          ua: "Ukraine",
+        };
+      case "ru":
+        return {
+          cis: "СНГ",
+          eu: "ЕС",
+          kz: "Казахстан",
+          ru: "РФ",
+          tr: "Турция",
+          ua: "Украина",
+        };
+    }
+  };
+
   return (
     <section className="container pb-12 lg:pb-16">
       <Alert data={dataAlert()} />
       {recipientParticipant !== null && (
         <InfoRecipientParticipant
-          data={{ recipientParticipant, participant, recipient }}
+          data={{
+            recipientParticipant,
+            participant,
+            recipient,
+            steamRegions: steamRegions(),
+          }}
         />
       )}
       {userParticipant && (
-        <InfoUserParticipant data={{ userParticipant, participant, user }} />
+        <InfoUserParticipant
+          data={{
+            userParticipant,
+            participant,
+            user,
+            steamRegions: steamRegions(),
+          }}
+        />
       )}
     </section>
   );
