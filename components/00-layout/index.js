@@ -40,7 +40,7 @@ const Layout = ({ children, data }) => {
         </div>
       )}
       <Header data={header} />
-      <div className="relative z-10 pb-14 lg:pb-28">{children}</div>
+      <div className="relative z-10 pb-14 lg:pb-10">{children}</div>
     </>
   );
 };

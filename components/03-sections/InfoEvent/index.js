@@ -117,7 +117,7 @@ const InfoEvent = ({ data }) => {
   };
 
   return (
-    <section className="container">
+    <section className="container pb-12 lg:pb-16">
       <Alert data={dataAlert()} />
       {recipientParticipant !== null && (
         <InfoRecipientParticipant

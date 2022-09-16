@@ -317,7 +317,7 @@ const FormEvent = ({ data, event }) => {
 
   return (
     <>
-      <section className="container">
+      <section className="container pb-12 lg:pb-16">
         <Formik
           initialValues={{
             platforms: [
